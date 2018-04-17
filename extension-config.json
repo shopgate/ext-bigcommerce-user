@@ -2,11 +2,6 @@
   "version": "0.1.0",
   "id": "@shopgate/bigcommerce-user",
   "trusted": true,
-  "directories": {
-    "steps": "./extension/",
-    "pipelines": "./pipelines/"
-  },
-  "steps": [],
   "configuration": {
     "storeHash" : {
       "type" : "bigApi",

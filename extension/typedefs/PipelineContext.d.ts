@@ -39,5 +39,5 @@ interface PipelineConfiguration {
   clientSecret: string
   accessToken: string
   requestTimeout: string
-  storeDomain: string?
+  storeDomain?: string
 }
