@@ -6,7 +6,6 @@ extension/node_modules
 .idea/
 npm-debug.log
 .vscode
-extension/test
 .integration-credentials.js
 extension/config.json
 /extension/.nyc_output

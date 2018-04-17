@@ -1,0 +1,23 @@
+{
+    "version": "1",
+    "pipeline": {
+      "id": "shopgate.user.getRegistrationUrl.v1",
+      "public": true,
+      "input": [],
+      "output": [
+        {"key": "url", "id": "1010"}
+      ],
+      "steps": [
+        {
+          "type": "extension",
+          "id": "@shopgate/bigcommerce-user",
+          "path": "@shopgate/bigcommerce-user/lib/getRegistrationUrl_v1.js",
+          "input": [],
+          "output": [
+            {"key": "url", "id": "1010"}
+          ]
+        }
+      ]
+    }
+  }
+  
