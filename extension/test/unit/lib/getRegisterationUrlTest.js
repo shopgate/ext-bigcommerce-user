@@ -1,4 +1,4 @@
-const getRegistrationUrl = require('../../../lib/getRegistrationUrl_v1')
+const getRegistrationUrl = require('../../../lib/getRegistrationUrl')
 const assert = require('assert')
 
 describe('getRegistrationUrl', () => {
@@ -15,6 +15,12 @@ describe('getRegistrationUrl', () => {
     assert.deepEqual(redirectUrl, { url: 'https://store-r456789.mybigcommerce.com/login.php?action=create_account' })
 
     redirectUrl = await getRegistrationUrl(/** @type {PipelineContext} */{ config: { storeHash: 'r456789', storeDomain: undefined } })
+    assert.deepEqual(redirectUrl, { url: 'https://store-r456789.mybigcommerce.com/login.php?action=create_account' })
+
+    redirectUrl = await getRegistrationUrl(/** @type {PipelineContext} */{ config: { storeHash: 'r456789', storeDomain: '' } })
+    assert.deepEqual(redirectUrl, { url: 'https://store-r456789.mybigcommerce.com/login.php?action=create_account' })
+
+    redirectUrl = await getRegistrationUrl(/** @type {PipelineContext} */{ config: { storeHash: 'r456789', storeDomain: '   ' } })
     assert.deepEqual(redirectUrl, { url: 'https://store-r456789.mybigcommerce.com/login.php?action=create_account' })
   })
 })
