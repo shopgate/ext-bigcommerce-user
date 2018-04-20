@@ -22,7 +22,11 @@
     "url": "https://github.com/shopgate/ext-bigcommerce-user.git"
   },
   "license": "Apache-2.0",
-  "dependencies": {},
+  "dependencies": {
+    "lodash.get": "^4.4.2",
+    "request": "^2.85.0",
+    "request-promise-native": "^1.0.5"
+  },
   "devDependencies": {
     "@types/bunyan": "^1.8.4",
     "@types/chai": "^4.1.2",

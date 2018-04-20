@@ -1,0 +1,3 @@
+interface GetShopUrlResponse {
+  url: string
+}

@@ -14,12 +14,22 @@
     "steps": [
       {
         "type": "extension",
-        "id": "@shopgate/user",
-        "path": "@shopgate/user/user/login_v1.js",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/getShopUrl.js",
+        "input": [],
+        "output": [
+          {"key": "url", "id": "1060"}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/login.js",
         "input": [
-          {"key": "sgxsMeta", "id": "1000", "optional": true},
+          {"key": "sgxsMeta", "id": "1000"},
           {"key": "strategy", "id": "1010"},
-          {"key": "parameters", "id": "1020"}
+          {"key": "parameters", "id": "1020"},
+          {"key": "shopUrl", "id": "1060"}
         ],
         "output": [
           {"key": "userId", "id": "1030"},

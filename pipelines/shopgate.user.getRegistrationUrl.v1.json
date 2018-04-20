@@ -11,8 +11,19 @@
         {
           "type": "extension",
           "id": "@shopgate/bigcommerce-user",
-          "path": "@shopgate/bigcommerce-user/lib/getRegistrationUrl.js",
+          "path": "@shopgate/bigcommerce-user/lib/getShopUrl.js",
           "input": [],
+          "output": [
+            {"key": "url", "id": "1020"}
+          ]
+        },
+        {
+          "type": "extension",
+          "id": "@shopgate/bigcommerce-user",
+          "path": "@shopgate/bigcommerce-user/lib/getRegistrationUrl.js",
+          "input": [
+            {"key": "shopUrl", "id": "1020"}
+          ],
           "output": [
             {"key": "url", "id": "1010"}
           ]

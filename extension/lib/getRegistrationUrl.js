@@ -1,12 +1,10 @@
 /**
  * @param {PipelineContext} context
- * @returns {getRegistrationUrlResponse}
+ * @param {GetRegistrationUrlInput} input
+ * @returns {Promise<GetRegistrationUrlResponse>}
  */
-module.exports = async (context) => {
-  const storeDomain = context.config.storeDomain ? context.config.storeDomain.trim() : ''
-  const domain = storeDomain || `store-${context.config.storeHash}.mybigcommerce.com`
-
+module.exports = async (context, input) => {
   return {
-    'url': `https://${domain}/login.php?action=create_account`
+    'url': `${input.shopUrl}/login.php?action=create_account`
   }
 }

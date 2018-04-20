@@ -1,3 +1,0 @@
-interface getRegistrationUrlResponse {
-  url: string
-}
