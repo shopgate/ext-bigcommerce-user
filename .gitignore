@@ -1,0 +1,13 @@
+.DS_Store
+build
+coverage
+extension/coverage
+node_modules
+.idea/
+npm-debug.log
+.vscode
+.integration-credentials.js
+extension/config.json
+/extension/.nyc_output
+.nyc_output
+package-lock.json

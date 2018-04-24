@@ -1,0 +1,86 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.loginUser.v1",
+    "public": true,
+    "input": [
+      {"key": "sgxsMeta", "id": "1000"},
+      {"key": "strategy",  "id": "1010"},
+      {"key": "parameters", "id": "1020"}
+    ],
+    "output": [
+      {"key": "success", "id": "1040"}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/user",
+        "path": "@shopgate/user/user/login_v1.js",
+        "input": [
+          {"key": "sgxsMeta", "id": "1000", "optional": true},
+          {"key": "strategy", "id": "1010"},
+          {"key": "parameters", "id": "1020"}
+        ],
+        "output": [
+          {"key": "userId", "id": "1030"},
+          {"key": "userData", "id": "1031"}
+        ]
+      },
+      {
+        "type": "auth",
+        "input": [
+          {"key": "userId", "id": "1030"}
+        ],
+        "output": [
+          {"key": "success", "id": "1040"}
+        ]
+      },
+      {
+        "type": "staticValue",
+        "input": [],
+        "values": [
+          {"key": "authType", "value": "Login"}
+        ],
+        "output": [
+          {"key": "authType", "id": "1050"}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/user",
+        "path": "@shopgate/user/user/checkAuthSuccess_v1.js",
+        "input": [
+          {"key": "authSuccess", "id": "1040"},
+          {"key": "authType", "id": "1050"}
+        ],
+        "output": []
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/user",
+        "path": "@shopgate/user/user/storeUserData.js",
+        "input": [
+          {"key": "userData", "id": "1031"}
+        ],
+        "output": []
+      },
+      {
+        "type": "pipeline",
+        "id": "shopgate.user.trackUserLoggedInEvent.v1",
+        "trusted": true,
+        "input": [
+          {"key": "sgxsMeta", "id": "1000", "optional": true}
+        ],
+        "output": []
+      },
+      {
+        "type": "pipeline",
+        "id": "bigcommerce.cart.mergeOnLogin.v1",
+        "input": [
+          {"key": "sgxsMeta", "id": "1000", "optional": true}
+        ],
+        "output": []
+      }
+    ]
+  }
+}
