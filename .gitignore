@@ -2,7 +2,7 @@
 build
 coverage
 extension/coverage
-node_modules
+extension/node_modules
 .idea/
 npm-debug.log
 .vscode
