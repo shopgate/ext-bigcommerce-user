@@ -55,15 +55,6 @@
       },
       {
         "type": "pipeline",
-        "id": "shopgate.user.trackUserLoggedInEvent.v1",
-        "trusted": true,
-        "input": [
-          {"key": "sgxsMeta", "id": "1000", "optional": true}
-        ],
-        "output": []
-      },
-      {
-        "type": "pipeline",
         "id": "bigcommerce.cart.mergeOnLogin.v1",
         "input": [
           {"key": "sgxsMeta", "id": "1000", "optional": true}

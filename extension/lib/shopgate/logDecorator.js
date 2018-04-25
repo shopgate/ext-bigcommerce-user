@@ -1,7 +1,7 @@
 module.exports = {
   /**
    * @param {Error} err
-   * @param {string} importance
+   * @param {string} [importance='high']
    * @returns {Object}
    */
   decorateError (err, importance = 'high') {

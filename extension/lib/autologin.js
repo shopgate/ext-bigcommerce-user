@@ -15,7 +15,7 @@ module.exports = async (context, input) => {
     const currentCustomer = CurrentCustomer.getCurrentCustomerFromJWTToken(input.token, context.config.bigCommerceAppClientSecret)
 
     return {
-      customerId: currentCustomer.id,
+      customerId: currentCustomer.id.toString(),
       email: currentCustomer.email
     }
   } catch (err) {

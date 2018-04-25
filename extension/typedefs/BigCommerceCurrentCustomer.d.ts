@@ -1,5 +1,5 @@
 interface BigCommerceCurrentCustomer {
-  id: string
+  id: number
   email: string
   groupId: string
 }
