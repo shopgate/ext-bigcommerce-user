@@ -1,0 +1,75 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "bigcommerce.user.autologin.v1",
+    "public": true,
+    "input": [
+      {"key": "sgxsMeta", "id": "1000", "optional": true},
+      {"key": "token", "id": "1001"}
+    ],
+    "output": [
+      {"key": "customerId", "id": "2001"},
+      {"key": "email", "id": "2002"}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/autologin.js",
+        "input": [
+          {"key": "token", "id": "1001"}
+        ],
+        "output": [
+          {"key": "customerId", "id": "2001"},
+          {"key": "email", "id": "2002"}
+        ]
+      },
+      {
+        "type": "auth",
+        "input": [
+          {"key": "userId", "id": "2001"}
+        ],
+        "output": [
+          {"key": "success", "id": "3001"}
+        ]
+      },
+      {
+        "type": "staticValue",
+        "input": [],
+        "values": [
+          {"key": "authType", "value": "Autologin"}
+        ],
+        "output": [
+          {"key": "authType", "id": "3002"}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/checkAuthSuccess.js",
+        "input": [
+          {"key": "authSuccess", "id": "3001"},
+          {"key": "authType", "id": "3002"}
+        ],
+        "output": []
+      },
+      {
+        "type": "pipeline",
+        "id": "shopgate.user.trackUserLoggedInEvent.v1",
+        "trusted": true,
+        "input": [
+          {"key": "sgxsMeta", "id": "1000", "optional": true}
+        ],
+        "output": []
+      },
+      {
+        "type": "pipeline",
+        "id": "bigcommerce.cart.mergeOnLogin.v1",
+        "input": [
+          {"key": "sgxsMeta", "id": "1000", "optional": true}
+        ],
+        "output": []
+      }
+    ]
+  }
+}
