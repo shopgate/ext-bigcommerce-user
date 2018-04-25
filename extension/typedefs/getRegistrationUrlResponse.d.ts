@@ -1,0 +1,3 @@
+interface getRegistrationUrlResponse {
+  url: string
+}

@@ -8,3 +8,4 @@ module.exports = async (context, input) => {
     'url': `${input.shopUrl}/login.php?action=create_account`
   }
 }
+
