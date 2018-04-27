@@ -25,7 +25,7 @@
   "dependencies": {
     "lodash.get": "^4.4.2",
     "request": "^2.85.0",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.5",
     "jwt-simple": "^0.5.1",
     "node-bigcommerce": "^3.0.0"
   },
