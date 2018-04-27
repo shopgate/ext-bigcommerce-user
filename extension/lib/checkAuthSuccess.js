@@ -1,20 +1,17 @@
-const UnknownError = require('./errors/UnknownError')
-
 /**
- * @typedef {object} input
- * @property {object} sgxsMeta
- * @property {string} sessionId
+ * Full version will be delivered within ApiLogin/Logout story
  *
- * @param context
- * @param input
- * @param cb
- * @returns {*}
+ * @param {PipelineContext} context
+ * @param {Object} input
+ * @param {boolean} input.authSuccess
+ * @param {string} input.authType
+ * @returns {Promise<void>}
  */
-module.exports = function (context, input, cb) {
+module.exports = async function (context, input) {
   if (input.authSuccess !== true) {
     context.log.error(input.authType + ': Auth step finished unsuccessfully.')
-    return cb(new UnknownError(), null)
+    const e = new Error()
+    e.code = 'EAUTHFAILED'
+    throw e
   }
-
-  return cb(null, {})
 }

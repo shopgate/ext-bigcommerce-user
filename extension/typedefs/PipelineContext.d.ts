@@ -1,5 +1,5 @@
 import * as Logger from 'bunyan'
-  
+
 interface PipelineContext {
   config: PipelineConfiguration
   log: Logger
@@ -20,11 +20,14 @@ interface PipelineStorageSetCallback {
 }
 
 interface PipelineStorage {
-  get(key: string, callback: PipelineStorageGetCallback)
+  get(key: string, callback: PipelineStorageGetCallback) : void
+  get(key: string) : Promise<string | number | Object>
 
-  set(key: string, value: string | number | Object, callback: PipelineStorageSetCallback)
+  set(key: string, value: string | number | Object, callback: PipelineStorageSetCallback) : void
+  set(key: string, value: string | number | Object) : Promise<void>
 
-  del(key: string, callback: PipelineStorageDelCallback)
+  del(key: string, callback: PipelineStorageDelCallback) : void | Promise<void>
+  del(key: string) : Promise<void>
 }
 
 interface PipelineStorageContainer {
@@ -40,4 +43,6 @@ interface PipelineConfiguration {
   accessToken: string
   requestTimeout: string
   storeDomain?: string
+  bigCommerceAppClientId: string
+  bigCommerceAppClientSecret: string
 }
