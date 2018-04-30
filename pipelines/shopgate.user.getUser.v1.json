@@ -1,0 +1,40 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.getUser.v1",
+    "public": true,
+    "input": [
+      {
+        "key": "sgxsMeta",
+        "id": "1000",
+        "optional": true
+      }
+    ],
+    "output": [
+      {
+        "key": "id",
+        "id": "2001"
+      }
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/getUser.js",
+        "input": [
+          {
+            "key": "sgxsMeta",
+            "id": "1000",
+            "optional": true
+          }
+        ],
+        "output": [
+          {
+            "key": "id",
+            "id": "2001"
+          }
+        ]
+      }
+    ]
+  }
+}
