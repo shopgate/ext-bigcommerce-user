@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ### Added
 - auto login pipeline for users to be able to login automatically after registering in BigCommerce store.
+- getUser pipeline providing only user id.
 
 ## [0.2.0] - 2018-04-17
 ### Added

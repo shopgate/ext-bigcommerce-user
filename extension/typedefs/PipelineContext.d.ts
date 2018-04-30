@@ -3,6 +3,7 @@ import * as Logger from 'bunyan'
 interface PipelineContext {
   config: PipelineConfiguration
   log: Logger
+  meta: PipelineContextMeta
 
   storage: PipelineStorageContainer
 }
@@ -45,4 +46,8 @@ interface PipelineConfiguration {
   storeDomain?: string
   bigCommerceAppClientId: string
   bigCommerceAppClientSecret: string
+}
+
+interface PipelineContextMeta {
+  userId?: string
 }
