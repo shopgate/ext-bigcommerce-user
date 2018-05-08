@@ -2,8 +2,9 @@ const BigCommerce = require('node-bigcommerce')
 const request = require('request-promise-native')
 const get = require('lodash.get')
 const InvalidCredentialsError = require('./errors/InvalidCredentialsError')
+const BigcommerceCustomerRepository = require('./respository/BigcommerceCustomerRepository')
 
-let apiClientV2
+let customerRepo
 
 /**
  * @param {PipelineContext} context
@@ -11,15 +12,15 @@ let apiClientV2
  * @returns {Promise<LoginResponse>}
  */
 module.exports = async (context, input) => {
-  if (!apiClientV2) {
-    apiClientV2 = new BigCommerce({
+  if (!customerRepo) {
+    customerRepo = BigcommerceCustomerRepository.getInstance(new BigCommerce({
       logLevel: 'info',
       clientId: context.config.clientId,
       accessToken: context.config.accessToken,
       storeHash: context.config.storeHash,
       responseType: 'json',
       apiVersion: 'v2'
-    })
+    }))
   }
 
   try {
@@ -32,12 +33,10 @@ module.exports = async (context, input) => {
       throw new InvalidCredentialsError()
     }
 
-    const uri = `/customers?email=${encodeURIComponent(input.parameters.login)}`
-    const customers = await apiClientV2.get(uri)
-    if (!customers || customers.length < 1) {
-      throw new Error('customer not found')
-    }
-    const customer = customers[0]
+    const customer = await customerRepo.getCustomerByEmail(input.parameters.login)
+
+    // TODO add this when there is a specification for addresses
+    // const addresses = await customerRepo.getAddresses(customer.id.toString())
 
     return {
       userId: customer.id.toString(),
@@ -49,8 +48,18 @@ module.exports = async (context, input) => {
         gender: null,
         birthday: null,
         phone: customer.phone,
-        customerGroups: [],
+        customerGroups: customer.customer_group_id ? [customer.customer_group_id] : [],
         addresses: []
+        // TODO add this when there is a specification for addresses
+        // addresses: addresses.map(address => ({
+        //   firstName: address.first_name,
+        //   lastName: address.last_name,
+        //   street: address.street_1,
+        //   city: address.city,
+        //   state: address.state,
+        //   zip: address.zip,
+        //   country: address.country
+        // }))
       }
     }
   } catch (e) {
@@ -75,7 +84,6 @@ const submitLoginForm = async (url, email, password) => {
     if (get(e, 'name') === 'StatusCodeError' && get(e, 'statusCode') === 302) {
       const location = get(e, 'response.headers.location', '')
       if (location.includes('/account.php')) {
-        // 'SHOP_SESSION_TOKEN'
         // We're being redirected to the "account" page --> login was successful.
         return true
       }
