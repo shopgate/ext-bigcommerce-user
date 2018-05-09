@@ -32,7 +32,8 @@
           {"key": "shopUrl", "id": "1060"}
         ],
         "output": [
-          {"key": "userId", "id": "1030"}
+          {"key": "userId", "id": "1030"},
+          {"key": "userData", "id": "1031"}
         ]
       },
       {
