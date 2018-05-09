@@ -32,8 +32,7 @@
           {"key": "shopUrl", "id": "1060"}
         ],
         "output": [
-          {"key": "userId", "id": "1030"},
-          {"key": "userData", "id": "1031"}
+          {"key": "userId", "id": "1030"}
         ]
       },
       {
@@ -57,8 +56,8 @@
       },
       {
         "type": "extension",
-        "id": "@shopgate/user",
-        "path": "@shopgate/user/user/checkAuthSuccess_v1.js",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/checkAuthSuccess.js",
         "input": [
           {"key": "authSuccess", "id": "1040"},
           {"key": "authType", "id": "1050"}
@@ -67,8 +66,8 @@
       },
       {
         "type": "extension",
-        "id": "@shopgate/user",
-        "path": "@shopgate/user/user/storeUserData.js",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/storeUserData.js",
         "input": [
           {"key": "userData", "id": "1031"}
         ],
