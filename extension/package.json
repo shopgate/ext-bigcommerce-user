@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/bigcommerce-user",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Shopgate Connect Bigcommerce User",
   "scripts": {
     "precommit": "npm run test && npm run lint-staged",
