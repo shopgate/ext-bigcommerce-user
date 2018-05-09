@@ -87,5 +87,12 @@
         "value": "15000"
       }
     }
-  }
+  },
+  "components": [
+    {
+      "id": "RegisterSubscription",
+      "path": "frontend/Register/subscribers.js",
+      "type": "subscribers"
+    }
+  ]
 }
