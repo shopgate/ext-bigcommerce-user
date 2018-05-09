@@ -63,7 +63,7 @@ module.exports = async (context, input) => {
       }
     }
   } catch (e) {
-    console.log(e)
+    context.log.error(e)
     throw e
   }
 }
