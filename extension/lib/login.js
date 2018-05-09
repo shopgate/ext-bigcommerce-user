@@ -2,7 +2,7 @@ const BigCommerce = require('node-bigcommerce')
 const request = require('request-promise-native')
 const get = require('lodash.get')
 const InvalidCredentialsError = require('./errors/InvalidCredentialsError')
-const BigcommerceCustomerRepository = require('./respository/BigcommerceCustomerRepository')
+const BigCommerceCustomerRepository = require('./bigcommerce/CustomerRepository')
 
 let customerRepo
 
@@ -13,7 +13,7 @@ let customerRepo
  */
 module.exports = async (context, input) => {
   if (!customerRepo) {
-    customerRepo = BigcommerceCustomerRepository.create(new BigCommerce({
+    customerRepo = BigCommerceCustomerRepository.create(new BigCommerce({
       logLevel: 'info',
       clientId: context.config.clientId,
       accessToken: context.config.accessToken,

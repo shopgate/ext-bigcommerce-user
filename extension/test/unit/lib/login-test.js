@@ -6,7 +6,7 @@ const proxyquire = require('proxyquire')
 // over a hundred times faster, so that it doesn't cause a timeout.
 require('../../../lib/login')
 
-const BigcommerceCustomerRepository = require('../../../lib/respository/BigcommerceCustomerRepository')
+const BigCommerceCustomerRepository = require('../../../lib/bigcommerce/CustomerRepository')
 
 describe('login()', async () => {
   const sandbox = sinon.createSandbox()
@@ -35,8 +35,8 @@ describe('login()', async () => {
       'request-promise-native': requestStub
     })
 
-    repoStub = sandbox.createStubInstance(BigcommerceCustomerRepository)
-    sandbox.stub(BigcommerceCustomerRepository, 'create').returns(repoStub)
+    repoStub = sandbox.createStubInstance(BigCommerceCustomerRepository)
+    sandbox.stub(BigCommerceCustomerRepository, 'create').returns(repoStub)
   })
 
   afterEach(() => {
