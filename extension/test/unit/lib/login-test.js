@@ -36,7 +36,7 @@ describe('login()', async () => {
     })
 
     repoStub = sandbox.createStubInstance(BigcommerceCustomerRepository)
-    sandbox.stub(BigcommerceCustomerRepository, 'getInstance').returns(repoStub)
+    sandbox.stub(BigcommerceCustomerRepository, 'create').returns(repoStub)
   })
 
   afterEach(() => {

@@ -3,7 +3,7 @@ class BigcommerceCustomerRepository {
     this.apiClientV2 = apiClientV2
   }
 
-  static getInstance (apiClientV2) {
+  static create (apiClientV2) {
     return new BigcommerceCustomerRepository(apiClientV2)
   }
 

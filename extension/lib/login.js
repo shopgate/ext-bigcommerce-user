@@ -13,7 +13,7 @@ let customerRepo
  */
 module.exports = async (context, input) => {
   if (!customerRepo) {
-    customerRepo = BigcommerceCustomerRepository.getInstance(new BigCommerce({
+    customerRepo = BigcommerceCustomerRepository.create(new BigCommerce({
       logLevel: 'info',
       clientId: context.config.clientId,
       accessToken: context.config.accessToken,
