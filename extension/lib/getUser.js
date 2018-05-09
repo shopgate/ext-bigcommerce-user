@@ -8,6 +8,11 @@ module.exports = async (context) => {
     throw new UnauthorisedError('Permission denied: User is not logged in.')
   }
 
+  const userInfo = await context.storage.user.get('userInfo')
+  if (userInfo) {
+    return userInfo
+  }
+
   return {
     id: context.meta.userId
   }
