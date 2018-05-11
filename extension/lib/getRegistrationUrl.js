@@ -3,7 +3,7 @@
  * @param {GetRegistrationUrlInput} input
  * @returns {Promise<GetRegistrationUrlResponse>}
  */
-module.exports = (context, input) => {
+module.exports = async (context, input) => {
   return {
     'url': `${input.shopUrl}/login.php?action=create_account`
   }

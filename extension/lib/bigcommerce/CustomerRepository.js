@@ -2,14 +2,32 @@ const jwtDecoder = require('jwt-simple')
 const BigCommerceCustomerTokenInvalidError = require('./customer/jwt/TokenInvalidError')
 const BigCommerceCustomerTokenUnverifiedError = require('./customer/jwt/TokenInvalidError')
 const BigCommerceCustomerTokenExpiredError = require('./customer/jwt/TokenExpiredError')
+const BigCommerce = require('node-bigcommerce')
 
 class BigCommerceCustomerRepository {
+  /**
+   * @param {BigCommerce} apiClientV2
+   */
   constructor (apiClientV2) {
     this.apiClientV2 = apiClientV2
   }
 
-  static create (apiClientV2) {
-    return new BigCommerceCustomerRepository(apiClientV2)
+  /**
+   * @param {string} clientId
+   * @param {string} accessToken
+   * @param {string} storeHash
+   * @returns {BigCommerceCustomerRepository}
+   */
+  static create (clientId, accessToken, storeHash) {
+    const bigcommerceV2 = new BigCommerce({
+      logLevel: 'info',
+      clientId: clientId,
+      accessToken: accessToken,
+      storeHash: storeHash,
+      responseType: 'json',
+      apiVersion: 'v2'
+    })
+    return new BigCommerceCustomerRepository(bigcommerceV2)
   }
 
   /**

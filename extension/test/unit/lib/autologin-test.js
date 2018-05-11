@@ -23,7 +23,7 @@ describe('autologin', function () {
   let currentCustomerStub
 
   beforeEach(() => {
-    sandbox = sinon.sandbox.create()
+    sandbox = sinon.createSandbox()
     context.log = sandbox.createStubInstance(Logger)
     currentCustomerStub = sandbox.stub(currentCustomer, 'getCurrentCustomerFromJWTToken')
   })

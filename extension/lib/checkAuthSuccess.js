@@ -1,5 +1,6 @@
+const AuthFailedError = require('./errors/AuthFailedError')
+
 /**
- * Full version will be delivered within ApiLogin/Logout story
  *
  * @param {PipelineContext} context
  * @param {Object} input
@@ -10,8 +11,6 @@
 module.exports = async function (context, input) {
   if (input.authSuccess !== true) {
     context.log.error(input.authType + ': Auth step finished unsuccessfully.')
-    const e = new Error()
-    e.code = 'EAUTHFAILED'
-    throw e
+    throw new AuthFailedError('Authorisation failed.')
   }
 }
