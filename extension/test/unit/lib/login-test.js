@@ -1,12 +1,15 @@
 const chai = require('chai')
 const sinon = require('sinon')
 const proxyquire = require('proxyquire')
+chai.use(require('chai-as-promised')).should()
+const Logger = require('bunyan')
 
 // Pre-loading the module with all its dependencies in order to make the proxyquire call below
 // over a hundred times faster, so that it doesn't cause a timeout.
 require('../../../lib/login')
 
 const BigCommerceCustomerRepository = require('../../../lib/bigcommerce/CustomerRepository')
+const InvalidCredentialsError = require('../../../lib/shopgate/customer/errors/InvalidCredentialsError')
 
 describe('login()', async () => {
   const sandbox = sinon.createSandbox()
@@ -30,6 +33,8 @@ describe('login()', async () => {
   }
 
   beforeEach(function () {
+    context.log = sandbox.createStubInstance(Logger)
+
     requestStub = sandbox.stub()
     login = proxyquire('../../../lib/login', {
       'request-promise-native': requestStub
@@ -48,7 +53,6 @@ describe('login()', async () => {
     error.name = 'StatusCodeError'
     error.statusCode = 302
     error.response = {headers: {location: '/account.php'}}
-    error.foo = 'bar'
     requestStub.rejects(error)
 
     repoStub.getCustomerByEmail
@@ -93,5 +97,20 @@ describe('login()', async () => {
     const actual = await login(context, input)
 
     chai.assert.deepEqual(actual, expected)
+  })
+
+  it('should throw an InvalidCredentialsError if we are redirected to the login page again', async () => {
+    const error = new Error()
+    error.name = 'StatusCodeError'
+    error.statusCode = 302
+    error.response = {headers: {location: '/login.php'}}
+    requestStub.rejects(error)
+
+    return login(context, input).should.eventually.be.rejectedWith(InvalidCredentialsError)
+  })
+
+  it('should throw an Error if the BC login unexpectedly returns 200', async () => {
+    requestStub.resolves('')
+    return login(context, input).should.eventually.be.rejectedWith(Error)
   })
 })
