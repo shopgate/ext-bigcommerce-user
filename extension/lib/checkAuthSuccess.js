@@ -1,4 +1,4 @@
-const AuthFailedError = require('./errors/AuthFailedError')
+const AuthFailedError = require('./shopgate/customer/errors/AuthFailedError')
 
 /**
  *

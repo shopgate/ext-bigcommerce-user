@@ -1,6 +1,6 @@
 const request = require('request-promise-native')
 const get = require('lodash.get')
-const InvalidCredentialsError = require('./errors/InvalidCredentialsError')
+const InvalidCredentialsError = require('./shopgate/customer/errors/InvalidCredentialsError')
 const BigCommerceCustomerRepository = require('./bigcommerce/CustomerRepository')
 
 let customerRepo

@@ -1,4 +1,4 @@
-const UnauthorisedError = require('./shopgate/customer/UnauthorisedError')
+const UnauthorisedError = require('./shopgate/customer/errors/UnauthorisedError')
 /**
  * @param {PipelineContext} context
  * @returns {Promise<getUserResponse>}

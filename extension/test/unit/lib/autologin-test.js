@@ -2,7 +2,7 @@ const currentCustomer = require('../../../lib/bigcommerce/CustomerRepository')
 const BigCommerceCustomerTokenInvalidError = require('../../../lib/bigcommerce/customer/jwt/TokenInvalidError')
 const BigCommerceCustomerTokenUnverifiedError = require('../../../lib/bigcommerce/customer/jwt/TokenInvalidError')
 const BigCommerceCustomerTokenExpiredError = require('../../../lib/bigcommerce/customer/jwt/TokenExpiredError')
-const ShopgateAutologinInvalidTokenReceivedError = require('../../../lib/shopgate/customer/autologin/InvalidTokenReceivedError')
+const ShopgateAutologinInvalidTokenReceivedError = require('../../../lib/shopgate/customer/errors/InvalidTokenReceivedError')
 const subjectUnderTest = require('../../../lib/autologin')
 
 const assert = require('assert')

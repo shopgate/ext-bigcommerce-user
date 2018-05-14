@@ -2,7 +2,7 @@ const CurrentCustomer = require('./bigcommerce/CustomerRepository')
 const BigCommerceCustomerTokenInvalidError = require('./bigcommerce/customer/jwt/TokenInvalidError')
 const BigCommerceCustomerTokenUnverifiedError = require('./bigcommerce/customer/jwt/TokenInvalidError')
 const BigCommerceCustomerTokenExpiredError = require('./bigcommerce/customer/jwt/TokenExpiredError')
-const ShopgateAutologinInvalidTokenReceivedError = require('./shopgate/customer/autologin/InvalidTokenReceivedError')
+const ShopgateAutologinInvalidTokenReceivedError = require('./shopgate/customer/errors/InvalidTokenReceivedError')
 const { decorateError } = require('./shopgate/logDecorator')
 
 /**
