@@ -80,20 +80,18 @@ const submitLoginForm = async (url, email, password) => {
     }
     await request(options)
   } catch (e) {
-    if (!(get(e, 'name') === 'StatusCodeError' && get(e, 'statusCode') === 302)) {
-      throw e
-    }
+    if (get(e, 'name') === 'StatusCodeError' && get(e, 'statusCode') === 302) {
+      const location = get(e, 'response.headers.location', '')
 
-    const location = get(e, 'response.headers.location', '')
+      if (location.includes('/login.php')) {
+        // We're being redirected to the login page --> credentials were invalid.
+        throw new InvalidCredentialsError()
+      }
 
-    if (location.includes('/login.php')) {
-      // We're being redirected to the login page --> credentials were invalid.
-      throw new InvalidCredentialsError()
-    }
-
-    if (location.includes('/account.php')) {
-      // We're being redirected to the "account" page --> login was successful.
-      return
+      if (location.includes('/account.php')) {
+        // We're being redirected to the "account" page --> login was successful.
+        return
+      }
     }
 
     // Some other error that we don't know how to handle.
