@@ -91,12 +91,13 @@ const submitLoginForm = async (url, email, password) => {
       throw new InvalidCredentialsError()
     }
 
-    if (!location.includes('/account.php')) {
-      // Some other error that we don't know how to handle.
-      throw e
+    if (location.includes('/account.php')) {
+      // We're being redirected to the "account" page --> login was successful.
+      return
     }
 
-    return
+    // Some other error that we don't know how to handle.
+    throw e
   }
 
   // The login action normally never returns 200.
