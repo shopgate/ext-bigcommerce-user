@@ -53,7 +53,17 @@ describe('login()', async () => {
     error.name = 'StatusCodeError'
     error.statusCode = 302
     error.response = {headers: {location: '/account.php'}}
-    requestStub.rejects(error)
+    requestStub
+      .withArgs(sinon.match({
+        url: sinon.match.string,
+        method: 'POST',
+        form: {
+          login_email: 'john.doe@test.com',
+          login_pass: 'password1'
+        },
+        resolveWithFullResponse: true
+      }))
+      .rejects(error)
 
     repoStub.getCustomerByEmail
       .withArgs('john.doe@test.com')
@@ -112,5 +122,14 @@ describe('login()', async () => {
   it('should throw an Error if the BC login unexpectedly returns 200', async () => {
     requestStub.resolves('')
     return login(context, input).should.eventually.be.rejectedWith(Error)
+  })
+
+  it('should log and rethrow unkwnown errors', async () => {
+    const error = new Error('this is a test')
+    error.name = 'FooError'
+    requestStub.rejects(error)
+
+    await login(context, input).should.eventually.be.rejectedWith(error)
+    sinon.assert.calledOnce(context.log.error)
   })
 })
