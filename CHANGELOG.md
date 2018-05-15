@@ -6,7 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 ### Added
-- login to BigCommerce and logout of BigCommerce 
+- login to BigCommerce and logout of BigCommerce
+- frontend logic for opening registration url
 
 ## [0.3.0] - 2018-05-08
 ### Added

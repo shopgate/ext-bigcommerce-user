@@ -30,12 +30,10 @@
         "type": "staticValue",
         "input": [],
         "values": [
-          {"key": "authType", "value": "Logout"},
-          {"key": "eventType", "value": "userLoggedOut"}
+          {"key": "authType", "value": "Logout"}
         ],
         "output": [
-          {"key": "authType", "id": "1020"},
-          {"key": "eventType", "id": "1030"}
+          {"key": "authType", "id": "1020"}
         ]
       },
       {
@@ -45,14 +43,6 @@
         "input": [
           {"key": "authSuccess", "id": "1010"},
           {"key": "authType", "id": "1020"}
-        ],
-        "output": []
-      },
-      {
-        "type": "pipeline",
-        "id": "shopgate.tracking.trackEvent.v1",
-        "input": [
-          { "key": "type", "id": "1030" }
         ],
         "output": []
       }
