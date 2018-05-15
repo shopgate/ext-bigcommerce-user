@@ -10,6 +10,7 @@ require('../../../lib/login')
 
 const BigCommerceCustomerRepository = require('../../../lib/bigcommerce/CustomerRepository')
 const InvalidCredentialsError = require('../../../lib/shopgate/customer/errors/InvalidCredentialsError')
+const UnexpectedResponseError = require('../../../lib/shopgate/customer/errors/UnexpectedResponseError')
 
 describe('login()', async () => {
   const sandbox = sinon.createSandbox()
@@ -121,7 +122,7 @@ describe('login()', async () => {
 
   it('should throw an Error if the BC login unexpectedly returns 200', async () => {
     requestStub.resolves('')
-    return login(context, input).should.eventually.be.rejectedWith(Error)
+    return login(context, input).should.eventually.be.rejectedWith(UnexpectedResponseError)
   })
 
   it('should log and rethrow unkwnown errors', async () => {

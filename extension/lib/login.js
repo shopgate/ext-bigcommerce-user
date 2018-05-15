@@ -1,7 +1,9 @@
 const request = require('request-promise-native')
 const get = require('lodash.get')
 const InvalidCredentialsError = require('./shopgate/customer/errors/InvalidCredentialsError')
+const UnexpectedResponseError = require('./shopgate/customer/errors/UnexpectedResponseError')
 const BigCommerceCustomerRepository = require('./bigcommerce/CustomerRepository')
+const { decorateError } = require('./shopgate/logDecorator')
 
 let customerRepo
 
@@ -56,7 +58,7 @@ module.exports = async (context, input) => {
       }
     }
   } catch (e) {
-    context.log.error(e)
+    context.log.error(decorateError(e))
     throw e
   }
 }
@@ -99,5 +101,5 @@ const submitLoginForm = async (url, email, password) => {
   }
 
   // The login action normally never returns 200.
-  throw new Error('Unexpected 200 response from Bigcommerce login action.')
+  throw new UnexpectedResponseError()
 }
