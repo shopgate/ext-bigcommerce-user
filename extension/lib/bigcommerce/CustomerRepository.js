@@ -62,6 +62,10 @@ class BigCommerceCustomerRepository {
     }
   }
 
+  /**
+   * @param {string} email
+   * @returns {Promise<BigCommerceCustomerByEmail>}
+   */
   async getCustomerByEmail (email) {
     const uri = `/customers?email=${encodeURIComponent(email)}`
     const customers = await this.apiClientV2.get(uri)
@@ -71,6 +75,10 @@ class BigCommerceCustomerRepository {
     return customers[0]
   }
 
+  /**
+   * @param {number} customerId
+   * @returns {Promise<Object>}
+   */
   async getAddresses (customerId) {
     const uri = `/customers/${customerId}/addresses`
     const addresses = await this.apiClientV2.get(uri)

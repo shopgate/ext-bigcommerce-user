@@ -58,7 +58,7 @@ module.exports = async (context, input) => {
       }
     }
   } catch (e) {
-    context.log.error(decorateError(e))
+    context.log.error(decorateError(e), 'Error in login process.')
     throw e
   }
 }

@@ -1,3 +1,4 @@
+const { decorateError } = require('./shopgate/logDecorator')
 /**
  * @param {PipelineContext} context
  * @param {LoginInput} input
@@ -7,7 +8,7 @@ module.exports = async (context, input) => {
   try {
     await context.storage.user.del('userInfo')
   } catch (err) {
-    context.log.error(`failed to remove userInfo: ${err}`)
+    context.log.error(decorateError(err), 'failed to remove userInfo')
     throw err
   }
 }
