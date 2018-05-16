@@ -14,7 +14,16 @@
       {
         "key": "id",
         "id": "2001"
-      }
+      },
+      {"key": "mail", "id": "1020", "optional": true},
+      {"key": "firstName", "id": "1030", "optional": true},
+      {"key": "lastName", "id": "1040", "optional": true},
+      {"key": "gender", "id": "1050", "optional": true},
+      {"key": "birthday", "id": "1060", "optional": true},
+      {"key": "phone", "id": "1070", "optional": true},
+      {"key": "customerGroups", "id": "1080", "optional": true},
+      {"key": "addresses", "id": "1090", "optional": true},
+      {"key": "messages", "id": "1100", "optional": true}
     ],
     "steps": [
       {
@@ -32,7 +41,16 @@
           {
             "key": "id",
             "id": "2001"
-          }
+          },
+          {"key": "mail", "id": "1020", "optional": true},
+          {"key": "firstName", "id": "1030", "optional": true},
+          {"key": "lastName", "id": "1040", "optional": true},
+          {"key": "gender", "id": "1050", "optional": true},
+          {"key": "birthday", "id": "1060", "optional": true},
+          {"key": "phone", "id": "1070", "optional": true},
+          {"key": "customerGroups", "id": "1080", "optional": true},
+          {"key": "addresses", "id": "1090", "optional": true},
+          {"key": "messages", "id": "1100", "optional": true}
         ]
       }
     ]

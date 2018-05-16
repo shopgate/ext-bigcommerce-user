@@ -1,0 +1,51 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.logoutUser.v1",
+    "public": true,
+    "input": [
+      {"key": "sgxsMeta", "id": "1000"}
+    ],
+    "output": [
+      {"key": "success", "id": "1010"}
+    ],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/logout.js",
+        "input": [
+          {"key": "sgxsMeta", "id": "1000", "optional": true}
+        ],
+        "output" : []
+      },
+      {
+        "type": "auth",
+        "input": [],
+        "output": [
+          {"key": "success", "id": "1010"}
+        ]
+      },
+      {
+        "type": "staticValue",
+        "input": [],
+        "values": [
+          {"key": "authType", "value": "Logout"}
+        ],
+        "output": [
+          {"key": "authType", "id": "1020"}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/checkAuthSuccess.js",
+        "input": [
+          {"key": "authSuccess", "id": "1010"},
+          {"key": "authType", "id": "1020"}
+        ],
+        "output": []
+      }
+    ]
+  }
+}

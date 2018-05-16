@@ -2,8 +2,34 @@ const jwtDecoder = require('jwt-simple')
 const BigCommerceCustomerTokenInvalidError = require('./customer/jwt/TokenInvalidError')
 const BigCommerceCustomerTokenUnverifiedError = require('./customer/jwt/TokenInvalidError')
 const BigCommerceCustomerTokenExpiredError = require('./customer/jwt/TokenExpiredError')
+const BigCommerce = require('node-bigcommerce')
 
 class BigCommerceCustomerRepository {
+  /**
+   * @param {BigCommerce} apiClientV2
+   */
+  constructor (apiClientV2) {
+    this.apiClientV2 = apiClientV2
+  }
+
+  /**
+   * @param {string} clientId
+   * @param {string} accessToken
+   * @param {string} storeHash
+   * @returns {BigCommerceCustomerRepository}
+   */
+  static create (clientId, accessToken, storeHash) {
+    const bigcommerceV2 = new BigCommerce({
+      logLevel: 'info',
+      clientId: clientId,
+      accessToken: accessToken,
+      storeHash: storeHash,
+      responseType: 'json',
+      apiVersion: 'v2'
+    })
+    return new BigCommerceCustomerRepository(bigcommerceV2)
+  }
+
   /**
    * @param {string} token JWT token
    * @param {string} appClientSecret Secret with which token was signed.
@@ -34,6 +60,32 @@ class BigCommerceCustomerRepository {
       email: decoded.customer.email,
       groupId: decoded.customer.group_id
     }
+  }
+
+  /**
+   * @param {string} email
+   * @returns {Promise<BigCommerceCustomerByEmail>}
+   */
+  async getCustomerByEmail (email) {
+    const uri = `/customers?email=${encodeURIComponent(email)}`
+    const customers = await this.apiClientV2.get(uri)
+    if (!customers || customers.length < 1) {
+      throw new Error('customer not found')
+    }
+    return customers[0]
+  }
+
+  /**
+   * @param {number} customerId
+   * @returns {Promise<Object>}
+   */
+  async getAddresses (customerId) {
+    const uri = `/customers/${customerId}/addresses`
+    const addresses = await this.apiClientV2.get(uri)
+    if (!addresses || addresses.length < 1) {
+      return []
+    }
+    return addresses
   }
 }
 

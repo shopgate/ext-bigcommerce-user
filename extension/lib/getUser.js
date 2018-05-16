@@ -1,4 +1,4 @@
-const UnauthorisedError = require('./shopgate/customer/UnauthorisedError')
+const UnauthorisedError = require('./shopgate/customer/errors/UnauthorisedError')
 /**
  * @param {PipelineContext} context
  * @returns {Promise<getUserResponse>}
@@ -6,6 +6,11 @@ const UnauthorisedError = require('./shopgate/customer/UnauthorisedError')
 module.exports = async (context) => {
   if (!context.meta.userId) {
     throw new UnauthorisedError('Permission denied: User is not logged in.')
+  }
+
+  const userInfo = await context.storage.user.get('userInfo')
+  if (userInfo) {
+    return userInfo
   }
 
   return {

@@ -7,7 +7,7 @@ extension/node_modules
 npm-debug.log
 .vscode
 .integration-credentials.js
-extension/config.json
+config.json
 /extension/.nyc_output
 .nyc_output
 package-lock.json
