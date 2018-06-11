@@ -2,6 +2,7 @@ language: node_js
 
 install:
 - cd extension; npm install; cd ..
+- cd frontend; npm install; cd ..
 
 env: # important! Without the top-level env, no job will be allowed to fail.
   - JOB_DEFAULT=test
@@ -16,6 +17,8 @@ matrix:
       - npm run test
       - npm run lint
       - npm run check
+      - cd ../frontend
+      - npm run lint
     - node_js: 8
       env: TYPE=INTEGRATION
       script:
@@ -29,6 +32,6 @@ matrix:
 notifications:
   slack:
     rooms:
-      secure: wOKb6NsjaePgSa3cKB9DMNs8reIKkFU3WzESGRJTRQPRMeOHbUdWWzQtA7pvG+VNWNpN/McHhTTxWdPyiPOjs/G5YMaRJUeh4IvVPlq1iovXxEoanH+e11dV2bA8eb/8BGOPHqfyCGDbyFKLXLb3r3EId4zybc0wy/UB29AV2loDE74bvMxWB45Pwnr8QSqvUARMaiAlfIJZDG9EB8bXnFjRBRiitagbkLdw6B6UMQf8FKEYoVRUNxQJlncNOhpW1+7jE9AGZ2coQ9SnktTI4u5Z1AoMIcHHzN2b5zzRHV346PW8+lsiE3RbgArV6G49psVmWkxJls3V2vWh89rQUkUEtLg1E02TfcTIrmXTteZ5yWsmYaYQapLHXjCniEBvDYw8BdPlxVIdDMwBerfehCH1up2X4fQmILQSA+HR+ZsNaZXzq/k54YPqGXosXoocnGUYp+b7XTywn1hWRI17KbhqSPYwKDyenHIXZRkJEXGZkWW3kWcswcvnl3c7sKur7+FxRHGwfJPQ4sbwpOkWoE+gwO3OvKxCwJ5QdLmcL/u3Nfh1nGg6sciUoLQumMzxtMvgPeM5+WscBajRSPLflM8HyzIE5dWEHZtAU5IMUsRaAjkktL3soG4SQ/55EsZ/PLHBVT5HYBVUwzUjuwdv97U5PrUwaUj37b9Tyhe/gSE=
+      secure: gTYX7Eb2QsizELvdWH9GW544IGTWeQOYornt/y8QlXqv6k0Yt+pVw3kvUNRzkp7hVS6UF37sBfibrseTjhvoQR3D6qWF5RHGwrFADMY8eWkfc4bVHmZJ32Hsrp+V4BQ8IACCdhV0vMWFx8r6rZnKe8vwovLJnB3mQUEfEV4EmcD2nc8MXPjVAXs1rCCjOywA66NpJJebM+BFGZ0NoeRPFlWgbt/I9LmwwraDlvhfal9ABEmDqJvQ8/Sbbcqx8XSPKiDnCM+x3qC68p+6956UurxlhQG0TwMeZyoZC1qVScyUPNyoIXt303Q0O0tPomrP49Mb4o1B5P6hisMd37ITv0YgRFBeYxJFxMu6YiGmX1T4w74ITVeXtfn3HIBz5E+E8WfJl6C+kVtiZC4PCjD7C/vzVf5Z9IPp/hQFpPz6skkSMvK/DmfeD0lNG7SCGq+E/coapCdh4KaM8vlC9itKGFg8+hNB0j/BWMefDx5Sh1tGm1pSMZut7M5oEpsLKqjYQKYhdcihck4S3TEv0bXIb5tKp4lJpcoNjCc7rgIx+kZjKyJMx9jJs1eDscTW0bNkh/ooAhANiCls7u1H5hlLOlcxK2aNkV1BFaIOahhsO/zoAmZeQMgHrNifgq6uv/MzCzjcXYAvQUg32TX7CxqS/SQU2+qDkuCsA3XDHyEqomg=
     on_success: change
     on_failure: always
