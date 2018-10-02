@@ -21,9 +21,9 @@ class BigCommerceCustomerRepository {
   static create (clientId, accessToken, storeHash) {
     const bigcommerceV2 = new BigCommerce({
       logLevel: 'info',
-      clientId: clientId,
-      accessToken: accessToken,
-      storeHash: storeHash,
+      clientId,
+      accessToken,
+      storeHash,
       responseType: 'json',
       apiVersion: 'v2'
     })
@@ -86,6 +86,17 @@ class BigCommerceCustomerRepository {
       return []
     }
     return addresses
+  }
+
+  /**
+   * @param {number} customerId
+   * @param {string} password
+   */
+  async login (customerId, password) {
+    const uri = `/customers/${customerId}/validate`
+    const valid = await this.apiClientV2.post(uri, { password })
+
+    return valid && valid.success
   }
 }
 

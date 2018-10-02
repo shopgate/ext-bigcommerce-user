@@ -1,7 +1,7 @@
 const { decorateError } = require('./shopgate/logDecorator')
 /**
- * @param {object} context
- * @param {object} input
+ * @param {Object} context
+ * @param {Object} input
  */
 module.exports = async (context, input) => {
   try {
