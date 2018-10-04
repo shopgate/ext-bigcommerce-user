@@ -110,4 +110,29 @@ describe('BigCommerceCustomerRepository', () => {
       chai.assert.deepEqual(await repo.getAddresses(25), [])
     })
   })
+
+  describe('login()', () => {
+    const mockedApiResponse = {
+      success: true
+    }
+
+    it('should pass through the customer_id and return true on success', async () => {
+      apiClientStub.post
+        .withArgs(`/customers/21/validate`, { password: 'foo' })
+        .returns(mockedApiResponse)
+
+      const success = await repo.login(21, 'foo')
+      chai.assert.isTrue(success)
+    })
+
+    it('should pass through the customer_id and return false on no success', async () => {
+      mockedApiResponse.success = false
+      apiClientStub.post
+        .withArgs(`/customers/21/validate`, { password: 'foo' })
+        .returns(mockedApiResponse)
+
+      const success = await repo.login(21, 'foo')
+      chai.assert.isFalse(success)
+    })
+  })
 })
