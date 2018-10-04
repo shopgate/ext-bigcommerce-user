@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [0.4.1] - 2018-10-04
+### Changed
+- login user via validate password api
+
 ## [0.4.0] - 2018-05-16
 ### Added
 - login to BigCommerce and logout of BigCommerce
@@ -24,7 +28,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - login pipeline now calls an additional step at the end (from the bigcommerce cart extension) that merges the anonymous cart into the logged in cart
 
-[Unreleased]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.1...HEAD
+[0.4.1]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.1.0...v0.2.0
