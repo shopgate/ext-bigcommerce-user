@@ -49,21 +49,37 @@ module.exports = async (context, input) => {
       }
     }
   } catch (e) {
+    // We know it just failed, return
+    if (e instanceof InvalidCredentialsError) throw e
+
+    const returnError = new Error()
+    returnError.code = 'EUNKNOWN'
+
     // Try parsing the (potential) underlying api error
     const errorMessageMatch = e.message.match(/({.+})/)
     if (errorMessageMatch) {
-      let errorMessage
       try {
-        errorMessage = JSON.parse(errorMessageMatch[1]).message
-      } catch (unparseable) {
-        context.log.error(decorateError(unparseable), 'Unable to process the error from BigC api')
-        throw e
-      }
+        const { message, status } = JSON.parse(errorMessageMatch[1])
 
-      throw new Error(errorMessage)
+        if (message && status) {
+          if (status >= 400 && status < 500) {
+            returnError.code = 'EINVALID'
+            returnError.message = message
+          }
+        }
+      } catch (unparseable) {
+        context.log.error(
+          decorateError(unparseable),
+          'Unable to process the error from BigC api'
+        )
+      }
     }
 
-    context.log.error(decorateError(e), 'Error in login process.')
-    throw e
+    if (returnError.code === 'EUNKNOWN') {
+      // Log anything thats unknown
+      context.log.error(decorateError(e), 'Error in login process.')
+    }
+
+    throw returnError
   }
 }

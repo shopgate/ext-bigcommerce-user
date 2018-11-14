@@ -55,12 +55,12 @@ describe('BigCommerceCustomerRepository', () => {
       chai.assert.deepEqual(await repo.getCustomerByEmail('john.doe@test.com'), mockedApiResponse[0])
     })
 
-    it('should return undefined if customer was not found', async () => {
+    it('should return null if customer was not found', async () => {
       apiClientStub.get
         .withArgs('/customers?email=non.existing.user%40test.com')
         .returns([])
 
-      chai.assert.isUndefined(await repo.getCustomerByEmail('non.existing.user@test.com'))
+      chai.assert.isNull(await repo.getCustomerByEmail('non.existing.user@test.com'))
     })
   })
 

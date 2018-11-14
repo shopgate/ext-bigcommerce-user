@@ -70,7 +70,7 @@ class BigCommerceCustomerRepository {
     const uri = `/customers?email=${encodeURIComponent(email)}`
     const customers = await this.apiClientV2.get(uri)
 
-    if (!customers || customers.length < 1) return
+    if (!customers || customers.length < 1) return null
 
     return customers[0]
   }
