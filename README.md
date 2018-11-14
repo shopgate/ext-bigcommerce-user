@@ -1,7 +1,9 @@
+# Shopgate Connect - Bigcommerce User Extension
 
+[![GitHub license](http://dmlc.github.io/img/apache2.svg)](LICENSE)
+[![Build Status](https://travis-ci.org/shopgate/ext-bigcommerce-user.svg?branch=master)](https://travis-ci.org/shopgate/ext-bigcommerce-user)
 
-# Shopgate Connect - Extension Bigcommerce User
-[![GitHub license](http://dmlc.github.io/img/apache2.svg)](LICENSE.md)
+This BigCommerce extension will sync the user from Shopgate to BigCommerce.
 
 ## Changelog
 
@@ -9,7 +11,7 @@ See [CHANGELOG.md](CHANGELOG.md) file for more information.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) file for more information.
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md) file for more information.
 
 ## About Shopgate
 
@@ -21,6 +23,6 @@ apps and mobile websites for the iPhone, iPad, Android smartphones and tablets.
 
 ## License
 
-Shopgate Connect - Extension BigCommerce User is available under the Apache License, Version 2.0.
+This extension is available under the Apache License, Version 2.0.
 
-See the [LICENSE](./LICENSE.md) file for more information.
+See the [LICENSE](./LICENSE) file for more information.
