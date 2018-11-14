@@ -57,28 +57,35 @@ module.exports = async (context, input) => {
 
     // Try parsing the (potential) underlying api error
     const errorMessageMatch = e.message.match(/({.+})/)
-    if (errorMessageMatch) {
-      try {
-        const { message, status } = JSON.parse(errorMessageMatch[1])
 
-        if (message && status) {
-          if (status >= 400 && status < 500) {
-            returnError.code = 'EINVALID'
-            returnError.message = message
-          }
-        }
-      } catch (unparseable) {
-        context.log.error(
-          decorateError(unparseable),
-          'Unable to process the error from BigC api'
-        )
-      }
-    }
-
-    if (returnError.code === 'EUNKNOWN') {
-      // Log anything thats unknown
+    if (!errorMessageMatch) {
       context.log.error(decorateError(e), 'Error in login process.')
+      throw returnError
     }
+
+    let parsed
+    try {
+      parsed = JSON.parse(errorMessageMatch[1])
+    } catch (unparseable) {
+      context.log.error(
+        decorateError(unparseable),
+        'Unable to process the error from BigC api'
+      )
+    }
+
+    if (!parsed) throw returnError
+
+    const { message, status } = parsed
+    if (message && status && status >= 400 && status < 500) {
+      const error = new Error(message)
+      error.code = 'EUNKNOWN'
+
+      // Give api message back to user
+      throw error
+    }
+
+    // Log anything thats not due to bad input
+    context.log.error(decorateError(e), 'Error in login process.')
 
     throw returnError
   }

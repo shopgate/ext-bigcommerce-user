@@ -125,11 +125,7 @@ describe('login()', async () => {
     error.name = 'FooError'
     repoStub.getCustomerByEmail.rejects(error)
 
-    try {
-      await login(context, input)
-    } catch (errorCaught) {
-      chai.assert.equal(errorCaught.code, 'EUNKNOWN')
-    }
+    await login(context, input).should.eventually.be.rejectedWith(Error).and.have.property('code', 'EUNKNOWN')
 
     sinon.assert.calledOnce(context.log.error)
   })
@@ -140,11 +136,7 @@ describe('login()', async () => {
     repoStub.getCustomerByEmail.resolves(customerData)
     repoStub.login.rejects(error)
 
-    try {
-      await login(context, input)
-    } catch (errorCaught) {
-      chai.assert.equal(errorCaught.code, 'EUNKNOWN')
-    }
+    await login(context, input).should.eventually.be.rejectedWith(Error).and.have.property('code', 'EUNKNOWN')
 
     sinon.assert.calledOnce(context.log.error)
   })
@@ -153,12 +145,8 @@ describe('login()', async () => {
     const error = new Error(`Request returned error code: 400 and body: [{"status":400,"message":"The field 'email' is invalid."}]`)
     repoStub.getCustomerByEmail.rejects(error)
 
-    try {
-      await login(context, input)
-    } catch (errorCaught) {
-      chai.assert.equal(errorCaught.code, 'EINVALID')
-      chai.assert.equal(errorCaught.message, `The field 'email' is invalid.`)
-    }
+    await login(context, input).should.eventually.be.rejectedWith(Error)
+      .and.have.property('message', `The field 'email' is invalid.`)
 
     sinon.assert.notCalled(context.log.error)
   })
@@ -167,11 +155,7 @@ describe('login()', async () => {
     const error = new Error(`Request returned error code: 400 and body: 'something not parsable'`)
     repoStub.getCustomerByEmail.rejects(error)
 
-    try {
-      await login(context, input)
-    } catch (errorCaught) {
-      chai.assert.equal(errorCaught.code, 'EUNKNOWN')
-    }
+    await login(context, input).should.eventually.be.rejectedWith(Error).and.have.property('code', 'EUNKNOWN')
 
     sinon.assert.calledOnce(context.log.error)
   })
