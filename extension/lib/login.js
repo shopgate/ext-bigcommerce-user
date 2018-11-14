@@ -5,15 +5,6 @@ const { decorateError } = require('./shopgate/logDecorator')
 let customerRepo
 
 /**
- * @param {string} email email address to check
- * @returns {string} lowercase email if valid
- */
-function validateEmail (email) {
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(String(email).toLowerCase())
-}
-
-/**
  * @param {PipelineContext} context context
  * @param {LoginInput} input params
  * @returns {Promise<LoginResponse>}
@@ -58,13 +49,18 @@ module.exports = async (context, input) => {
       }
     }
   } catch (e) {
-    if (e.message && e.message === 'customer not found') {
-      throw new InvalidCredentialsError()
-    }
+    // Try parsing the (potential) underlying api error
+    const errorMessageMatch = e.message.match(/({.+})/)
+    if (errorMessageMatch) {
+      let errorMessage
+      try {
+        errorMessage = JSON.parse(errorMessageMatch[1]).message
+      } catch (unparseable) {
+        context.log.error(decorateError(unparseable), 'Unable to process the error from BigC api')
+        throw e
+      }
 
-    // Bigcommerce api actually throws a bad request when email invalid
-    if (!validateEmail(login)) {
-      throw new InvalidCredentialsError()
+      throw new Error(errorMessage)
     }
 
     context.log.error(decorateError(e), 'Error in login process.')
