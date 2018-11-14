@@ -5,8 +5,17 @@ const { decorateError } = require('./shopgate/logDecorator')
 let customerRepo
 
 /**
- * @param {PipelineContext} context
- * @param {LoginInput} input
+ * @param {string} email email address to check
+ * @returns {string} lowercase email if valid
+ */
+function validateEmail (email) {
+  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return re.test(String(email).toLowerCase())
+}
+
+/**
+ * @param {PipelineContext} context context
+ * @param {LoginInput} input params
  * @returns {Promise<LoginResponse>}
  */
 module.exports = async (context, input) => {
@@ -18,9 +27,8 @@ module.exports = async (context, input) => {
     )
   }
 
+  const { login, password } = input.parameters
   try {
-    const { login, password } = input.parameters
-
     const customer = await customerRepo.getCustomerByEmail(login)
 
     if (!customer) {
@@ -47,21 +55,18 @@ module.exports = async (context, input) => {
           ? [customer.customer_group_id]
           : [],
         addresses: []
-        // TODO add this when there is a specification for addresses
-        // addresses: addresses.map(address => ({
-        //   firstName: address.first_name,
-        //   lastName: address.last_name,
-        //   street: address.street_1,
-        //   city: address.city,
-        //   state: address.state,
-        //   zip: address.zip,
-        //   country: address.country
-        // }))
       }
     }
-    // TODO add this when there is a specification for addresses
-    // const addresses = await customerRepo.getAddresses(customer.id.toString())
   } catch (e) {
+    if (e.message && e.message === 'customer not found') {
+      throw new InvalidCredentialsError()
+    }
+
+    // Bigcommerce api actually throws a bad request when email invalid
+    if (!validateEmail(login)) {
+      throw new InvalidCredentialsError()
+    }
+
     context.log.error(decorateError(e), 'Error in login process.')
     throw e
   }
