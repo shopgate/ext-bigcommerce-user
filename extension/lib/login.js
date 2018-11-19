@@ -5,8 +5,8 @@ const { decorateError } = require('./shopgate/logDecorator')
 let customerRepo
 
 /**
- * @param {PipelineContext} context
- * @param {LoginInput} input
+ * @param {PipelineContext} context context
+ * @param {LoginInput} input params
  * @returns {Promise<LoginResponse>}
  */
 module.exports = async (context, input) => {
@@ -18,9 +18,8 @@ module.exports = async (context, input) => {
     )
   }
 
+  const { login, password } = input.parameters
   try {
-    const { login, password } = input.parameters
-
     const customer = await customerRepo.getCustomerByEmail(login)
 
     if (!customer) {
@@ -47,22 +46,47 @@ module.exports = async (context, input) => {
           ? [customer.customer_group_id]
           : [],
         addresses: []
-        // TODO add this when there is a specification for addresses
-        // addresses: addresses.map(address => ({
-        //   firstName: address.first_name,
-        //   lastName: address.last_name,
-        //   street: address.street_1,
-        //   city: address.city,
-        //   state: address.state,
-        //   zip: address.zip,
-        //   country: address.country
-        // }))
       }
     }
-    // TODO add this when there is a specification for addresses
-    // const addresses = await customerRepo.getAddresses(customer.id.toString())
   } catch (e) {
+    // We know it just failed, return
+    if (e instanceof InvalidCredentialsError) throw e
+
+    const returnError = new Error()
+    returnError.code = 'EUNKNOWN'
+
+    // Try parsing the (potential) underlying api error
+    const errorMessageMatch = e.message.match(/({.+})/)
+
+    if (!errorMessageMatch) {
+      context.log.error(decorateError(e), 'Error in login process.')
+      throw returnError
+    }
+
+    let parsed
+    try {
+      parsed = JSON.parse(errorMessageMatch[1])
+    } catch (unparseable) {
+      context.log.error(
+        decorateError(unparseable),
+        'Unable to process the error from BigC api'
+      )
+    }
+
+    if (!parsed) throw returnError
+
+    const { message, status } = parsed
+    if (message && status && status >= 400 && status < 500) {
+      const error = new Error(message)
+      error.code = 'EUNKNOWN'
+
+      // Give api message back to user
+      throw error
+    }
+
+    // Log anything thats not due to bad input
     context.log.error(decorateError(e), 'Error in login process.')
-    throw e
+
+    throw returnError
   }
 }

@@ -120,22 +120,43 @@ describe('login()', async () => {
     return login(context, input).should.eventually.be.rejectedWith(InvalidCredentialsError)
   })
 
-  it('should log and rethrow unkwnown errors at getting customer data', async () => {
+  it('should log but not rethrow unkwnown errors at getting customer data', async () => {
     const error = new Error('this is a test')
     error.name = 'FooError'
     repoStub.getCustomerByEmail.rejects(error)
 
-    await login(context, input).should.eventually.be.rejectedWith(error)
+    await login(context, input).should.eventually.be.rejectedWith(Error).and.have.property('code', 'EUNKNOWN')
+
     sinon.assert.calledOnce(context.log.error)
   })
 
-  it('should log and rethrow unkwnown errors at validate password', async () => {
+  it('should log error, but not rethrow unkwnown errors at validate password', async () => {
     const error = new Error('this is a test')
     error.name = 'FooError'
     repoStub.getCustomerByEmail.resolves(customerData)
     repoStub.login.rejects(error)
 
-    await login(context, input).should.eventually.be.rejectedWith(error)
+    await login(context, input).should.eventually.be.rejectedWith(Error).and.have.property('code', 'EUNKNOWN')
+
+    sinon.assert.calledOnce(context.log.error)
+  })
+
+  it('should rethrow known errors at getting the customer password', async () => {
+    const error = new Error(`Request returned error code: 400 and body: [{"status":400,"message":"The field 'email' is invalid."}]`)
+    repoStub.getCustomerByEmail.rejects(error)
+
+    await login(context, input).should.eventually.be.rejectedWith(Error)
+      .and.have.property('message', `The field 'email' is invalid.`)
+
+    sinon.assert.notCalled(context.log.error)
+  })
+
+  it('should log and throw unknown error if the api error cannot be parsed', async () => {
+    const error = new Error(`Request returned error code: 400 and body: 'something not parsable'`)
+    repoStub.getCustomerByEmail.rejects(error)
+
+    await login(context, input).should.eventually.be.rejectedWith(Error).and.have.property('code', 'EUNKNOWN')
+
     sinon.assert.calledOnce(context.log.error)
   })
 })

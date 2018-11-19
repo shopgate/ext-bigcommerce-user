@@ -69,9 +69,9 @@ class BigCommerceCustomerRepository {
   async getCustomerByEmail (email) {
     const uri = `/customers?email=${encodeURIComponent(email)}`
     const customers = await this.apiClientV2.get(uri)
-    if (!customers || customers.length < 1) {
-      throw new Error('customer not found')
-    }
+
+    if (!customers || customers.length < 1) return null
+
     return customers[0]
   }
 
