@@ -8,8 +8,7 @@
       {"key": "token", "id": "1001"}
     ],
     "output": [
-      {"key": "customerId", "id": "2001"},
-      {"key": "email", "id": "2002"}
+      {"key": "userId", "id": "2001"}
     ],
     "steps": [
       {
@@ -20,8 +19,8 @@
           {"key": "token", "id": "1001"}
         ],
         "output": [
-          {"key": "customerId", "id": "2001"},
-          {"key": "email", "id": "2002"}
+          {"key": "userId", "id": "2001"},
+          {"key": "userData", "id": "2002"}
         ]
       },
       {
@@ -50,6 +49,15 @@
         "input": [
           {"key": "authSuccess", "id": "3001"},
           {"key": "authType", "id": "3002"}
+        ],
+        "output": []
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/storeUserData.js",
+        "input": [
+          {"key": "userData", "id": "2002"}
         ],
         "output": []
       },

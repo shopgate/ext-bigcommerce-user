@@ -6,39 +6,14 @@ const Logger = require('bunyan')
 
 // Pre-loading the module with all its dependencies in order to make the proxyquire call below
 // Over a hundred times faster, so that it doesn't cause a timeout.
-require('../../../lib/login')
+let login = require('../../../lib/login')
 
 const BigCommerceCustomerRepository = require('../../../lib/bigcommerce/CustomerRepository')
 const InvalidCredentialsError = require('../../../lib/shopgate/customer/errors/InvalidCredentialsError')
 
 describe('login()', async () => {
   const sandbox = sinon.createSandbox()
-  let login
-  let requestStub
   let repoStub
-
-  const customerData = {
-    id: 21,
-    company: 'Fake Inc.',
-    first_name: 'John',
-    last_name: 'Doe',
-    email: 'john.doe@test.com',
-    phone: '123456789',
-    form_fields: null,
-    date_created: 'Thu, 28 Apr 2016 09:38:19 +0000',
-    date_modified: 'Tue, 03 Apr 2018 16:32:37 +0000',
-    store_credit: '0.0000',
-    registration_ip_address: '',
-    customer_group_id: 10,
-    notes: 'Registered via Shopgate',
-    tax_exempt_category: '',
-    reset_pass_on_login: false,
-    accepts_marketing: false,
-    addresses: {
-      url: 'https://api.bigcommerce.com/stores/r5s844ad/v2/customers/21/addresses',
-      resource: '/customers/21/addresses'
-    }
-  }
 
   const context = {
     config: {
@@ -55,12 +30,29 @@ describe('login()', async () => {
     }
   }
 
+  const userDataFixture = {
+    userId: '21',
+    userData: {
+      id: '21',
+      mail: 'john.doe@test.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      gender: null,
+      birthday: null,
+      phone: '123456789',
+      customerGroups: [10],
+      addresses: []
+    }
+  }
+
+  let getCustomerStub
+
   beforeEach(() => {
     context.log = sandbox.createStubInstance(Logger)
 
-    requestStub = sandbox.stub()
+    getCustomerStub = sandbox.stub()
     login = proxyquire('../../../lib/login', {
-      'request-promise-native': requestStub
+      './shopgate/customer/get': getCustomerStub
     })
 
     repoStub = sandbox.createStubInstance(BigCommerceCustomerRepository)
@@ -81,9 +73,7 @@ describe('login()', async () => {
       .withArgs(21, input.parameters.password)
       .resolves(true)
 
-    repoStub.getCustomerByEmail
-      .withArgs('john.doe@test.com')
-      .resolves(customerData)
+    getCustomerStub.returns(userDataFixture)
 
     const expected = {
       userId: '21',
@@ -108,6 +98,7 @@ describe('login()', async () => {
     repoStub.login
       .withArgs(21, input.parameters.password)
       .resolves(false)
+    getCustomerStub.returns(userDataFixture)
 
     return login(context, input).should.eventually.be.rejectedWith(InvalidCredentialsError)
   })
@@ -116,46 +107,18 @@ describe('login()', async () => {
     repoStub.getCustomerByEmail
       .withArgs(input.parameters.login)
       .resolves()
+    getCustomerStub.returns(userDataFixture)
 
     return login(context, input).should.eventually.be.rejectedWith(InvalidCredentialsError)
   })
 
-  it('should log but not rethrow unkwnown errors at getting customer data', async () => {
+  it('should log error and throw unkwnown errors at validate password', async () => {
     const error = new Error('this is a test')
     error.name = 'FooError'
-    repoStub.getCustomerByEmail.rejects(error)
-
-    await login(context, input).should.eventually.be.rejectedWith(Error).and.have.property('code', 'EUNKNOWN')
-
-    sinon.assert.calledOnce(context.log.error)
-  })
-
-  it('should log error, but not rethrow unkwnown errors at validate password', async () => {
-    const error = new Error('this is a test')
-    error.name = 'FooError'
-    repoStub.getCustomerByEmail.resolves(customerData)
     repoStub.login.rejects(error)
 
-    await login(context, input).should.eventually.be.rejectedWith(Error).and.have.property('code', 'EUNKNOWN')
-
-    sinon.assert.calledOnce(context.log.error)
-  })
-
-  it('should rethrow known errors at getting the customer password', async () => {
-    const error = new Error(`Request returned error code: 400 and body: [{"status":400,"message":"The field 'email' is invalid."}]`)
-    repoStub.getCustomerByEmail.rejects(error)
-
     await login(context, input).should.eventually.be.rejectedWith(Error)
-      .and.have.property('message', `The field 'email' is invalid.`)
-
-    sinon.assert.notCalled(context.log.error)
-  })
-
-  it('should log and throw unknown error if the api error cannot be parsed', async () => {
-    const error = new Error(`Request returned error code: 400 and body: 'something not parsable'`)
-    repoStub.getCustomerByEmail.rejects(error)
-
-    await login(context, input).should.eventually.be.rejectedWith(Error).and.have.property('code', 'EUNKNOWN')
+      .and.have.property('code', 'EUNKNOWN')
 
     sinon.assert.calledOnce(context.log.error)
   })
