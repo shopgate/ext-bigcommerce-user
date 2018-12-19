@@ -11,9 +11,9 @@ describe('getCurrentCustomerFromJWTToken', function () {
     /** @type {BigCommerceCurrentCustomer} currentCustomer */
     const currentCustomer = getCurrentCustomerFromJWTToken(token, 'my_super_secret')
 
-    assert.equal(currentCustomer.id, '154')
-    assert.equal(currentCustomer.email, 'test@shopgate.com')
-    assert.equal(currentCustomer.groupId, '1')
+    assert.strictEqual(currentCustomer.id, 154)
+    assert.strictEqual(currentCustomer.email, 'test@shopgate.com')
+    assert.strictEqual(currentCustomer.groupId, '1')
   })
 
   it('should verify JWT token', function () {
