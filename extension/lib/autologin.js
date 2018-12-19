@@ -4,6 +4,7 @@ const BigCommerceCustomerTokenUnverifiedError = require('./bigcommerce/customer/
 const BigCommerceCustomerTokenExpiredError = require('./bigcommerce/customer/jwt/TokenExpiredError')
 const ShopgateAutologinInvalidTokenReceivedError = require('./shopgate/customer/errors/InvalidTokenReceivedError')
 const { decorateError } = require('./shopgate/logDecorator')
+const getCustomer = require('./shopgate/customer/get')
 
 /**
  * @param {PipelineContext} context
@@ -11,13 +12,9 @@ const { decorateError } = require('./shopgate/logDecorator')
  * @param {string} input.token
  */
 module.exports = async (context, input) => {
+  let currentCustomer = null
   try {
-    const currentCustomer = CurrentCustomer.getCurrentCustomerFromJWTToken(input.token, context.config.bigCommerceAppClientSecret)
-
-    return {
-      customerId: currentCustomer.id.toString(),
-      email: currentCustomer.email
-    }
+    currentCustomer = CurrentCustomer.getCurrentCustomerFromJWTToken(input.token, context.config.bigCommerceAppClientSecret)
   } catch (err) {
     if (err instanceof BigCommerceCustomerTokenInvalidError) {
       context.log.error(decorateError(err, 'security'), 'Received invalid token for authorising auto-login.')
@@ -33,4 +30,6 @@ module.exports = async (context, input) => {
 
     throw err
   }
+
+  return getCustomer(context, currentCustomer.email)
 }
