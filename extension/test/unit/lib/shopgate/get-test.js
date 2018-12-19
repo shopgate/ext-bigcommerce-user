@@ -100,7 +100,17 @@ describe('getCustomer', function () {
     const error = new Error(`Request returned error code: 400 and body: 'something not parsable'`)
     repoStub.getCustomerByEmail.rejects(error)
 
-    await subjectUnderTest(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(Error)
+    await subjectUnderTest(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(UnknownError)
+      .and.have.property('code', 'EUNKNOWN')
+
+    sinon.assert.calledOnce(context.log.error)
+  })
+
+  it('should log and throw unknown error if the api error is a 500', async () => {
+    const error = new Error(`Request returned error code: 500 and body: [{"status":500,"message":"Internal Server Error"}]`)
+    repoStub.getCustomerByEmail.rejects(error)
+
+    await subjectUnderTest(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(UnknownError)
       .and.have.property('code', 'EUNKNOWN')
 
     sinon.assert.calledOnce(context.log.error)
