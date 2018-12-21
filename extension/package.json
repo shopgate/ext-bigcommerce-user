@@ -4,15 +4,15 @@
   "description": "Shopgate Connect Bigcommerce User",
   "scripts": {
     "precommit": "npm run test && npm run lint-staged",
-    "test": "_mocha --use_strict --recursive ./test",
+    "test": "_mocha --use_strict --timeout 15000 --recursive ./test",
     "test:unit": "_mocha --use_strict --recursive ./test/unit",
-    "test:integration": "_mocha --use_strict --timeout 3000 --recursive ./test/integration",
+    "test:integration": "_mocha --use_strict --timeout 15000 --recursive ./test/integration",
     "lint": "standard",
     "lint-staged": "lint-staged",
     "check": "npm audit",
     "cover:unit": "nyc _mocha --recursive ../test/unit",
-    "cover:integration": "nyc _mocha --use_strict --timeout 3000 --recursive ./test/integration",
-    "cover": "nyc _mocha --use_strict --timeout 3000 --recursive ./test"
+    "cover:integration": "nyc _mocha --use_strict --timeout 15000 --recursive ./test/integration",
+    "cover": "nyc _mocha --use_strict --timeout 15000 --recursive ./test"
   },
   "lint-staged": {
     "*.js": "npm run lint"
@@ -25,6 +25,8 @@
   "dependencies": {
     "jwt-simple": "^0.5.1",
     "lodash.get": "^4.4.2",
+    "lodash.isnil": "^4.0.0",
+    "lodash.omitby": "^4.6.0",
     "node-bigcommerce": "^3.0.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5"

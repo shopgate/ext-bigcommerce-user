@@ -4,9 +4,12 @@ const sinon = require('sinon')
 const Logger = require('bunyan')
 const proxyquire = require('proxyquire')
 
-const BigCommerceCustomerRepository = require('../../../../lib/bigcommerce/CustomerRepository')
-let subjectUnderTest = require('../../../../lib/shopgate/customer/get')
-const UnknownError = require('../../../../lib/shopgate/customer/errors/UnknownError')
+const BigCommerceCustomerRepository = require('../../../../../lib/bigcommerce/CustomerRepository')
+const BigCommerceCustomerRequestClientError = require('../../../../../lib/bigcommerce/customer/request/ClientError')
+const UnknownError = require('../../../../../lib/shopgate/customer/errors/UnknownError')
+const ClientRequestError = require('../../../../../lib/shopgate/customer/errors/ClientRequestError')
+
+let subjectUnderTest = require('../../../../../lib/shopgate/customer/get')
 
 describe('getCustomer', function () {
   let sandbox
@@ -47,7 +50,7 @@ describe('getCustomer', function () {
     repoStub = sandbox.createStubInstance(BigCommerceCustomerRepository)
     const repoCreate = sandbox.stub(BigCommerceCustomerRepository, 'create')
     repoCreate.returns(repoStub)
-    subjectUnderTest = proxyquire('../../../../lib/shopgate/customer/get', {
+    subjectUnderTest = proxyquire('../../../../../lib/shopgate/customer/get', {
       '../../bigcommerce/CustomerRepository': repoStub
     })
   })
@@ -75,9 +78,8 @@ describe('getCustomer', function () {
     })
   })
 
-  it('should log but not rethrow unkwnown errors at getting customer data', async () => {
-    const error = new Error('BigCommerce error')
-    error.name = 'BigCommerceError'
+  it('should log but not rethrow unknown errors at getting customer data', async () => {
+    const error = new Error('Some unknown error')
     repoStub.getCustomerByEmail.rejects(error)
 
     await subjectUnderTest(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(UnknownError)
@@ -86,33 +88,13 @@ describe('getCustomer', function () {
     sinon.assert.calledOnce(context.log.error)
   })
 
-  it('should rethrow known errors at getting the customer password', async () => {
-    const error = new Error(`Request returned error code: 400 and body: [{"status":400,"message":"The field 'email' is invalid."}]`)
+  it('should rethrow errors that are due to invalid client request', async () => {
+    const error = new BigCommerceCustomerRequestClientError(400, 'The field \'email\' is invalid.')
     repoStub.getCustomerByEmail.rejects(error)
 
-    await subjectUnderTest(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(Error)
+    await subjectUnderTest(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(ClientRequestError)
       .and.have.property('message', `The field 'email' is invalid.`)
 
     sinon.assert.notCalled(context.log.error)
-  })
-
-  it('should log and throw unknown error if the api error cannot be parsed', async () => {
-    const error = new Error(`Request returned error code: 400 and body: 'something not parsable'`)
-    repoStub.getCustomerByEmail.rejects(error)
-
-    await subjectUnderTest(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(UnknownError)
-      .and.have.property('code', 'EUNKNOWN')
-
-    sinon.assert.calledOnce(context.log.error)
-  })
-
-  it('should log and throw unknown error if the api error is a 500', async () => {
-    const error = new Error(`Request returned error code: 500 and body: [{"status":500,"message":"Internal Server Error"}]`)
-    repoStub.getCustomerByEmail.rejects(error)
-
-    await subjectUnderTest(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(UnknownError)
-      .and.have.property('code', 'EUNKNOWN')
-
-    sinon.assert.calledOnce(context.log.error)
   })
 })
