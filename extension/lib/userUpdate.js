@@ -34,12 +34,14 @@ module.exports = async (context, { firstName, lastName, customAttributes }) => {
     )
   }
 
+  const attributes = customAttributes || {}
+
   try {
     await customerRepo.update(parseInt(context.meta.userId), _.omitBy({
       first_name: firstName,
       last_name: lastName,
-      phone: customAttributes.phone,
-      company: customAttributes.company
+      phone: attributes.phone,
+      company: attributes.company
     }, _.isNil))
   } catch (err) {
     context.log.error(decorateError(err), 'Failed updating user')

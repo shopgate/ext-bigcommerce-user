@@ -1,6 +1,7 @@
 const UnauthorisedError = require('./shopgate/customer/errors/UnauthorisedError')
 const BigCommerceCustomerRepository = require('./bigcommerce/CustomerRepository')
 const { decorateError } = require('./shopgate/logDecorator')
+const InvalidCredentialsError = require('./shopgate/customer/errors/InvalidCredentialsError')
 
 /** @var {BigCommerceCustomerRepository} */
 let customerRepo
@@ -23,11 +24,15 @@ module.exports = async (context, { password }) => {
     )
   }
 
+  let isValid
   try {
-    const isValid = await customerRepo.login(parseInt(context.meta.userId), password)
-    return { isValid }
+    isValid = await customerRepo.login(parseInt(context.meta.userId), password)
   } catch (err) {
     context.log.error(decorateError(err), 'Failed verifying user\'s password')
     throw new Error()
+  }
+
+  if (!isValid) {
+    throw new InvalidCredentialsError()
   }
 }
