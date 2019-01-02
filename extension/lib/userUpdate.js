@@ -14,9 +14,10 @@ let customerRepo
  * @param {PipelineContext} context
  * @param {string} firstName
  * @param {string} lastName
+ * @param {Object} customAttributes
  * @returns {Promise}
  */
-module.exports = async (context, { firstName, lastName }) => {
+module.exports = async (context, { firstName, lastName, customAttributes }) => {
   if (!context.meta.userId) {
     throw new UnauthorisedError('Permission denied: User is not logged in.')
   }
@@ -36,7 +37,9 @@ module.exports = async (context, { firstName, lastName }) => {
   try {
     await customerRepo.update(parseInt(context.meta.userId), _.omitBy({
       first_name: firstName,
-      last_name: lastName
+      last_name: lastName,
+      phone: customAttributes.phone,
+      company: customAttributes.company
     }, _.isNil))
   } catch (err) {
     context.log.error(decorateError(err), 'Failed updating user')

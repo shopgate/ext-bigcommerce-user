@@ -29,6 +29,21 @@ describe('BigCommerceCustomerRepository', () => {
       })
     })
 
+    it('should update custom attributes', async () => {
+      await repo.update(customerId, {
+        company: 'Shopgate[running]',
+        phone: '+49691337169'
+      })
+      await sleep(1)
+      const customer = await repo.getCustomerById(customerId)
+      assert.strictEqual(customer.company, 'Shopgate[running]')
+      assert.strictEqual(customer.phone, '+49691337169')
+      await repo.update(customerId, {
+        company: 'Shopgate',
+        phone: '+49691337162'
+      })
+    })
+
     it('should update last name', async () => {
       await repo.update(customerId, {
         last_name: 'Test[running]'

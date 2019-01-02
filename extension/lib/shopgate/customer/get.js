@@ -37,10 +37,11 @@ module.exports = async function getCustomer (context, email) {
       mail: customer.email,
       firstName: customer.first_name,
       lastName: customer.last_name,
-      gender: null,
-      birthday: null,
-      phone: customer.phone,
-      customerGroups: customer.customer_group_id
+      customAttributes: {
+        phone: customer.phone,
+        company: customer.company
+      },
+      userGroups: customer.customer_group_id
         ? [customer.customer_group_id]
         : [],
       addresses: []

@@ -66,14 +66,15 @@ describe('getCustomer', function () {
       userId: '21',
       userData: {
         addresses: [],
-        birthday: null,
-        customerGroups: [10],
+        userGroups: [10],
         firstName: 'John',
-        gender: null,
         id: '21',
         lastName: 'Doe',
         mail: 'john.doe@test.com',
-        phone: '123456789'
+        customAttributes: {
+          phone: '123456789',
+          company: 'Fake Inc.'
+        }
       }
     })
   })
