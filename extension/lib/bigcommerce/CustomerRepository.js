@@ -126,7 +126,6 @@ class BigCommerceCustomerRepository {
    * @return {Promise<void>}
    */
   async update (customerId, customer) {
-    console.error('updating', customer)
     const uri = `/customers/${customerId}`
     try {
       await this.apiClientV2.put(uri, customer)
