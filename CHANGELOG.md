@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 - basic user data management
+
+## [0.4.3] - 2019-01-03
+### Fixed
 - ensured user data will be provided on auto login
 
 ## [0.4.2] - 2018-11-14
@@ -34,7 +37,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - login pipeline now calls an additional step at the end (from the bigcommerce cart extension) that merges the anonymous cart into the logged in cart
 
-[Unreleased]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.3...HEAD
+[0.4.3]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.1...v0.4.3
+[0.4.2]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.2.0...v0.3.0
