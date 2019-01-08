@@ -89,7 +89,6 @@ class BigCommerceCustomerRepository {
     const uri = `/customers/${customerId}`
     const customer = await this.apiClientV2.get(uri)
 
-    if (!customer) return null
 
     return customer
   }
