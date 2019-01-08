@@ -3,7 +3,7 @@ const BigCommerceRequestUnparseableMessageError = require('./request/UnparsableM
 
 module.exports = function shapeRequestError (err) {
   // Try parsing the (potential) underlying api error
-  const errorMessageMatch = err.message.match(/({.+})/)
+  const errorMessageMatch = err.message.match(/{.+}/)
   if (!errorMessageMatch) {
     return err
   }
