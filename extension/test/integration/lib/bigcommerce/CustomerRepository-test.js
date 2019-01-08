@@ -3,7 +3,7 @@ const chai = require('chai')
 chai.use(require('chai-as-promised')).should()
 const BigCommerceCustomerRepository = require('../../../../lib/bigcommerce/CustomerRepository')
 const BigCommerceRequestClientError = require('../../../../lib/bigcommerce/customer/request/ClientError')
-const { clientId, accessToken, storeHash } = require('../../../../../.integration-credentials')
+const { clientId, accessToken, storeHash } = require('../../../../.integration-credentials')
 const { sleep } = require('../../../util/sleep')
 
 describe('BigCommerceCustomerRepository', () => {
