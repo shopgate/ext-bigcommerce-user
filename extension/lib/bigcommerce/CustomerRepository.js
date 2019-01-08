@@ -90,7 +90,7 @@ class BigCommerceCustomerRepository {
     const customer = await this.apiClientV2.get(uri)
 
 
-    return customer
+    return customer || null
   }
 
   /**
