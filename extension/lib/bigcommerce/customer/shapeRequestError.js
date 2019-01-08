@@ -10,7 +10,7 @@ module.exports = function shapeRequestError (err) {
 
   let parsed
   try {
-    parsed = JSON.parse(errorMessageMatch[1])
+    parsed = JSON.parse(errorMessageMatch[0])
   } catch (unparseable) {
     return new BigCommerceRequestUnparseableMessageError('unable to parse')
   }
