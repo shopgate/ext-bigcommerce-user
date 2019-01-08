@@ -2,7 +2,7 @@ const jwtDecoder = require('jwt-simple')
 const BigCommerce = require('node-bigcommerce')
 
 const BigCommerceCustomerTokenInvalidError = require('./customer/jwt/TokenInvalidError')
-const BigCommerceCustomerTokenUnverifiedError = require('./customer/jwt/TokenInvalidError')
+const BigCommerceCustomerTokenUnverifiedError = require('./customer/jwt/TokenUnverifiedError')
 const BigCommerceCustomerTokenExpiredError = require('./customer/jwt/TokenExpiredError')
 const shapeRequestError = require('./customer/shapeRequestError')
 
