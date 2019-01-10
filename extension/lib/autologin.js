@@ -5,6 +5,7 @@ const BigCommerceCustomerTokenExpiredError = require('./bigcommerce/customer/jwt
 const ShopgateAutologinInvalidTokenReceivedError = require('./shopgate/customer/errors/InvalidTokenReceivedError')
 const { decorateError } = require('./shopgate/logDecorator')
 const getCustomer = require('./shopgate/customer/get')
+const UserNotFoundError = require('./shopgate/customer/errors/UserNotFoundError')
 
 /**
  * @param {PipelineContext} context
@@ -31,5 +32,14 @@ module.exports = async (context, input) => {
     throw err
   }
 
-  return getCustomer(context, currentCustomer.email)
+  return getCustomerFor(context, currentCustomer.email)
+}
+
+async function getCustomerFor (context, login) {
+  try {
+    return await getCustomer(context, login)
+  } catch (err) {
+    context.log.error(decorateError(err), err instanceof UserNotFoundError ? 'User was expected to exist but was not found' : `Unable to get the customer of ${login}`)
+    throw new Error()
+  }
 }
