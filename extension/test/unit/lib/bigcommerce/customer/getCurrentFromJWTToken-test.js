@@ -2,7 +2,7 @@ const assert = require('assert')
 const { expect } = require('chai')
 const { getCurrentCustomerFromJWTToken } = require('../../../../../lib/bigcommerce/CustomerRepository')
 const BigCommerceCustomerTokenInvalidError = require('../../../../../lib/bigcommerce/customer/jwt/TokenInvalidError')
-const BigCommerceCustomerTokenUnverifiedError = require('../../../../../lib/bigcommerce/customer/jwt/TokenInvalidError')
+const BigCommerceCustomerTokenUnverifiedError = require('../../../../../lib/bigcommerce/customer/jwt/TokenUnverifiedError')
 const BigCommerceCustomerTokenExpiredError = require('../../../../../lib/bigcommerce/customer/jwt/TokenExpiredError')
 
 describe('getCurrentCustomerFromJWTToken', function () {

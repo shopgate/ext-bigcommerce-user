@@ -1,0 +1,48 @@
+{
+  "version": "1",
+  "pipeline": {
+    "id": "shopgate.user.updateUser.v1",
+    "public": true,
+    "input": [
+      {"key": "firstName", "id": "1010"},
+      {"key": "lastName", "id": "1020"},
+      {"key": "customAttributes", "id": "1030", "optional": true}
+    ],
+    "output": [],
+    "steps": [
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/userUpdate.js",
+        "input": [
+          {"key": "firstName", "id": "1010"},
+          {"key": "lastName", "id": "1020"},
+          {"key": "customAttributes", "id": "1030", "optional": true}
+        ],
+        "output": []
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/mergeUserData.js",
+        "input": [
+          {"key": "firstName", "id": "1010"},
+          {"key": "lastName", "id": "1020"},
+          {"key": "customAttributes", "id": "1030", "optional": true}
+        ],
+        "output": [
+          {"key": "userData", "id": "2010"}
+        ]
+      },
+      {
+        "type": "extension",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/storeUserData.js",
+        "input": [
+          {"key": "userData", "id": "2010"}
+        ],
+        "output": []
+      }
+    ]
+  }
+}
