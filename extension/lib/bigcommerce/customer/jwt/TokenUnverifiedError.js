@@ -1,4 +1,4 @@
-class BigCommercecustomerTokenUnverifiedError extends Error {
+class BigCommerceCustomerTokenUnverifiedError extends Error {
   /**
    * @param {string} token
    */
@@ -8,4 +8,4 @@ class BigCommercecustomerTokenUnverifiedError extends Error {
   }
 }
 
-module.exports = BigCommercecustomerTokenUnverifiedError
+module.exports = BigCommerceCustomerTokenUnverifiedError

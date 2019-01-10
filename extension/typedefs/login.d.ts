@@ -14,10 +14,13 @@ interface LoginResponse {
     mail: string,
     firstName: string,
     lastName: string,
-    gender: string,
-    birthday: string,
-    phone: string,
-    customerGroups: Array,
+    customAttributes: LoginResponseCustomAttributes,
+    userGroups: Array,
     addresses: Array,
   },
+}
+
+interface LoginResponseCustomAttributes {
+  company: string,
+  phone: string
 }

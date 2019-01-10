@@ -1,8 +1,10 @@
 const jwtDecoder = require('jwt-simple')
-const BigCommerceCustomerTokenInvalidError = require('./customer/jwt/TokenInvalidError')
-const BigCommerceCustomerTokenUnverifiedError = require('./customer/jwt/TokenInvalidError')
-const BigCommerceCustomerTokenExpiredError = require('./customer/jwt/TokenExpiredError')
 const BigCommerce = require('node-bigcommerce')
+
+const BigCommerceCustomerTokenInvalidError = require('./customer/jwt/TokenInvalidError')
+const BigCommerceCustomerTokenUnverifiedError = require('./customer/jwt/TokenUnverifiedError')
+const BigCommerceCustomerTokenExpiredError = require('./customer/jwt/TokenExpiredError')
+const shapeRequestError = require('./customer/shapeRequestError')
 
 class BigCommerceCustomerRepository {
   /**
@@ -68,11 +70,26 @@ class BigCommerceCustomerRepository {
    */
   async getCustomerByEmail (email) {
     const uri = `/customers?email=${encodeURIComponent(email)}`
-    const customers = await this.apiClientV2.get(uri)
+    try {
+      const customers = await this.apiClientV2.get(uri)
 
-    if (!customers || customers.length < 1) return null
+      if (!customers || customers.length < 1) return null
 
-    return customers[0]
+      return customers[0]
+    } catch (e) {
+      throw shapeRequestError(e)
+    }
+  }
+
+  /**
+   * @param {number} customerId
+   * @returns {Promise<Object>}
+   */
+  async getCustomerById (customerId) {
+    const uri = `/customers/${customerId}`
+    const customer = await this.apiClientV2.get(uri)
+
+    return customer || null
   }
 
   /**
@@ -97,6 +114,22 @@ class BigCommerceCustomerRepository {
     const valid = await this.apiClientV2.post(uri, { password })
 
     return valid && valid.success
+  }
+
+  /**
+   * Update customer entity on bigc side.
+   * ATM custom fields (form_fields) are not supported see https://support.bigcommerce.com/s/question/0D51B000046LK53SAG/how-to-update-custom-customer-fields-using-api
+   * @param {number} customerId
+   * @param {BigCommerceCustomerRequest} customer
+   * @return {Promise<void>}
+   */
+  async update (customerId, customer) {
+    const uri = `/customers/${customerId}`
+    try {
+      await this.apiClientV2.put(uri, customer)
+    } catch (e) {
+      throw shapeRequestError(e)
+    }
   }
 }
 
