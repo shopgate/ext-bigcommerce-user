@@ -3,6 +3,7 @@ const BigCommerceCustomerRepository = require('./bigcommerce/CustomerRepository'
 const { decorateError } = require('./shopgate/logDecorator')
 const getCustomer = require('./shopgate/customer/get')
 const UnknownError = require('./shopgate/customer/errors/UnknownError')
+const UserNotFoundError = require('./shopgate/customer/errors/UserNotFoundError')
 
 let customerRepo
 
@@ -21,8 +22,7 @@ module.exports = async (context, input) => {
   }
 
   const { login, password } = input.parameters
-  const customer = await getCustomer(context, login)
-
+  const customer = await getCustomerFor(context, login)
   let success = null
   try {
     success = await customerRepo.login(parseInt(customer.userId), password)
@@ -36,4 +36,18 @@ module.exports = async (context, input) => {
   }
 
   return customer
+}
+
+async function getCustomerFor (context, login) {
+  try {
+    return await getCustomer(context, login)
+  } catch (err) {
+    if (err instanceof UserNotFoundError) {
+      throw new InvalidCredentialsError()
+    }
+
+    context.log.error(decorateError(err), `Unable to get the customer of ${login}`)
+
+    throw new Error()
+  }
 }

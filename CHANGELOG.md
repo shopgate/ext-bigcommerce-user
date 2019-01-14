@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
 - basic user data management
+### Fixed
+- handling user not found case during login process
 
 ## [0.4.3] - 2019-01-03
 ### Fixed
@@ -37,9 +40,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - login pipeline now calls an additional step at the end (from the bigcommerce cart extension) that merges the anonymous cart into the logged in cart
 
-[Unreleased]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.3...HEAD
-[0.4.3]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.1...v0.4.3
-[0.4.2]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.1...v0.4.2
+[Unreleased]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.1...HEAD
 [0.4.1]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.2.0...v0.3.0

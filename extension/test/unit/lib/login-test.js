@@ -10,6 +10,7 @@ let login = require('../../../lib/login')
 
 const BigCommerceCustomerRepository = require('../../../lib/bigcommerce/CustomerRepository')
 const InvalidCredentialsError = require('../../../lib/shopgate/customer/errors/InvalidCredentialsError')
+const UserNotFoundError = require('../../../lib/shopgate/customer/errors/UserNotFoundError')
 
 describe('login()', async () => {
   const sandbox = sinon.createSandbox()
@@ -104,12 +105,15 @@ describe('login()', async () => {
   })
 
   it('should throw an Error if the customer cannot be found', async () => {
-    repoStub.getCustomerByEmail
-      .withArgs(input.parameters.login)
-      .resolves()
-    getCustomerStub.returns(userDataFixture)
+    getCustomerStub.throws(new UserNotFoundError(input.parameters.login))
 
     return login(context, input).should.eventually.be.rejectedWith(InvalidCredentialsError)
+  })
+
+  it('should throw an Error if the customer failed for unknown reasons', async () => {
+    getCustomerStub.throws(new Error('fake error'))
+
+    return login(context, input).should.eventually.be.rejectedWith(Error)
   })
 
   it('should log error and throw unkwnown errors at validate password', async () => {

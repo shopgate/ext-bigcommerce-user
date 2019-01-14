@@ -2,6 +2,7 @@ const BigCommerceCustomerRepository = require('../../bigcommerce/CustomerReposit
 const { decorateError } = require('../logDecorator')
 const ClientRequestError = require('./errors/ClientRequestError')
 const UnknownError = require('./errors/UnknownError')
+const UserNotFoundError = require('./errors/UserNotFoundError')
 const BigCommerceRequestClientError = require('../../bigcommerce/customer/request/ClientError')
 
 let customerRepo = null
@@ -28,6 +29,10 @@ module.exports = async function getCustomer (context, email) {
     }
     context.log.error(decorateError(e), e.message)
     throw new UnknownError()
+  }
+
+  if (customer === null) {
+    throw new UserNotFoundError(email)
   }
 
   return {
