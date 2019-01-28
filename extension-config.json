@@ -80,6 +80,17 @@
         "key": "value.appClientSecret"
       }
     },
+    "userInfoTTL": {
+      "type" : "bigApi",
+      "destination" : "backend",
+      "default": "5m",
+      "params": {
+        "method":  "GET",
+        "service": "config",
+        "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
+        "key": "value.userCacheTTL"
+      }
+    },
     "requestTimeout": {
       "type": "static",
       "destination": "backend",

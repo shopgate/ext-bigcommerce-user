@@ -1,14 +1,16 @@
+const ShopgateUser = require('./shopgate/User')
 const { decorateError } = require('./shopgate/logDecorator')
+
 /**
  * @param {PipelineContext} context
- * @param {LoginInput} input
- * @returns {Promise<LoginResponse>}
+ * @returns {Promise}
  */
-module.exports = async (context, input) => {
+module.exports = async (context) => {
   try {
-    await context.storage.user.del('userInfo')
+    const user = ShopgateUser.create(context)
+    await user.remove()
   } catch (err) {
     context.log.error(decorateError(err), 'failed to remove userInfo')
-    throw err
+    throw new Error()
   }
 }

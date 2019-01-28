@@ -11,7 +11,7 @@ let customerRepo = null
  * @param {string} email
  * @return {Promise<LoginResponse>}
  */
-module.exports = async function getCustomer (context, email) {
+async function getCustomer (context, email) {
   if (!customerRepo) {
     customerRepo = BigCommerceCustomerRepository.create(
       context.config.clientId,
@@ -35,21 +35,51 @@ module.exports = async function getCustomer (context, email) {
     throw new UserNotFoundError(email)
   }
 
+  return formatResponse(customer)
+}
+
+/**
+ * @param {PipelineContext} context
+ * @param {number} id
+ * @returns {Promise<LoginResponse>}
+ */
+async function getCustomerById (context, id) {
+  if (!customerRepo) {
+    customerRepo = BigCommerceCustomerRepository.create(
+      context.config.clientId,
+      context.config.accessToken,
+      context.config.storeHash
+    )
+  }
+
+  return formatResponse(await customerRepo.getCustomerById(id))
+}
+
+/**
+ * @param bigCommerceCustomerResponse
+ * @returns {LoginResponse}
+ */
+function formatResponse (bigCommerceCustomerResponse) {
   return {
-    userId: customer.id.toString(),
+    userId: bigCommerceCustomerResponse.id.toString(),
     userData: {
-      id: customer.id.toString(),
-      mail: customer.email,
-      firstName: customer.first_name,
-      lastName: customer.last_name,
+      id: bigCommerceCustomerResponse.id.toString(),
+      mail: bigCommerceCustomerResponse.email,
+      firstName: bigCommerceCustomerResponse.first_name,
+      lastName: bigCommerceCustomerResponse.last_name,
       customAttributes: {
-        phone: customer.phone,
-        company: customer.company
+        phone: bigCommerceCustomerResponse.phone,
+        company: bigCommerceCustomerResponse.company
       },
-      userGroups: customer.customer_group_id
-        ? [customer.customer_group_id]
+      userGroups: bigCommerceCustomerResponse.customer_group_id
+        ? [bigCommerceCustomerResponse.customer_group_id]
         : [],
       addresses: []
     }
   }
+}
+
+module.exports = {
+  getCustomer,
+  getCustomerById
 }

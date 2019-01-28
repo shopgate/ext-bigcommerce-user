@@ -1,7 +1,7 @@
 const InvalidCredentialsError = require('./shopgate/customer/errors/InvalidCredentialsError')
 const BigCommerceCustomerRepository = require('./bigcommerce/CustomerRepository')
 const { decorateError } = require('./shopgate/logDecorator')
-const getCustomer = require('./shopgate/customer/get')
+const { getCustomer } = require('./shopgate/customer/get')
 const UnknownError = require('./shopgate/customer/errors/UnknownError')
 const UserNotFoundError = require('./shopgate/customer/errors/UserNotFoundError')
 

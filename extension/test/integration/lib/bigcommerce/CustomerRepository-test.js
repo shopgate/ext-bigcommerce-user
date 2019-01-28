@@ -15,7 +15,7 @@ describe('BigCommerceCustomerRepository', () => {
   })
 
   describe('update()', () => {
-    const customerId = 317
+    const customerId = 374
 
     it('should update first name', async () => {
       await repo.update(customerId, {
