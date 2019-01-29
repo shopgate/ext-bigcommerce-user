@@ -81,14 +81,16 @@
       }
     },
     "userInfoTTL": {
-      "type" : "bigApi",
+      "type" : "admin",
       "destination" : "backend",
       "default": "5m",
       "params": {
-        "method":  "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
-        "key": "value.userCacheTTL"
+        "type":  "text",
+        "label": "User cache TTL",
+        "required": false,
+        "options": {
+          "placeholder": "Example: 5d 3h 5m"
+        }
       }
     },
     "requestTimeout": {
