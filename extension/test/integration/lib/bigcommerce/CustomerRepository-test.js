@@ -9,9 +9,11 @@ const { sleep } = require('../../../util/sleep')
 describe('BigCommerceCustomerRepository', () => {
   /** @var {BigCommerceCustomerRepository} */
   let repo
+  /** @type Logger */
+  const logger = { debug: () => {} }
 
   beforeEach(() => {
-    repo = BigCommerceCustomerRepository.create(clientId, accessToken, storeHash)
+    repo = BigCommerceCustomerRepository.create(clientId, accessToken, storeHash, logger)
   })
 
   describe('update()', () => {

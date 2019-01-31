@@ -4,32 +4,37 @@ const BigCommerce = require('node-bigcommerce')
 const BigCommerceCustomerTokenInvalidError = require('./customer/jwt/TokenInvalidError')
 const BigCommerceCustomerTokenUnverifiedError = require('./customer/jwt/TokenUnverifiedError')
 const BigCommerceCustomerTokenExpiredError = require('./customer/jwt/TokenExpiredError')
+const BigCommerceRequestRepository = require('./RequestRepository')
 const shapeRequestError = require('./customer/shapeRequestError')
 
 class BigCommerceCustomerRepository {
   /**
-   * @param {BigCommerce} apiClientV2
+   * @param {BigCommerceRequestRepository} requestRepository
    */
-  constructor (apiClientV2) {
-    this.apiClientV2 = apiClientV2
+  constructor (requestRepository) {
+    this.request = requestRepository
   }
 
   /**
    * @param {string} clientId
    * @param {string} accessToken
    * @param {string} storeHash
+   * @param {Logger} logger context.log
    * @returns {BigCommerceCustomerRepository}
    */
-  static create (clientId, accessToken, storeHash) {
-    const bigcommerceV2 = new BigCommerce({
-      logLevel: 'info',
-      clientId,
-      accessToken,
-      storeHash,
-      responseType: 'json',
-      apiVersion: 'v2'
-    })
-    return new BigCommerceCustomerRepository(bigcommerceV2)
+  static create (clientId, accessToken, storeHash, logger) {
+    return new BigCommerceCustomerRepository(
+      new BigCommerceRequestRepository(
+        new BigCommerce({
+          logLevel: 'info',
+          clientId,
+          accessToken,
+          storeHash,
+          responseType: 'json',
+          apiVersion: 'v2'
+        }),
+        logger
+      ))
   }
 
   /**
@@ -71,7 +76,7 @@ class BigCommerceCustomerRepository {
   async getCustomerByEmail (email) {
     const uri = `/customers?email=${encodeURIComponent(email)}`
     try {
-      const customers = await this.apiClientV2.get(uri)
+      const customers = await this.request.get(uri)
 
       if (!customers || customers.length < 1) return null
 
@@ -87,7 +92,7 @@ class BigCommerceCustomerRepository {
    */
   async getCustomerById (customerId) {
     const uri = `/customers/${customerId}`
-    const customer = await this.apiClientV2.get(uri)
+    const customer = await this.request.get(uri)
 
     return customer || null
   }
@@ -98,7 +103,7 @@ class BigCommerceCustomerRepository {
    */
   async getAddresses (customerId) {
     const uri = `/customers/${customerId}/addresses`
-    const addresses = await this.apiClientV2.get(uri)
+    const addresses = await this.request.get(uri)
     if (!addresses || addresses.length < 1) {
       return []
     }
@@ -111,7 +116,7 @@ class BigCommerceCustomerRepository {
    */
   async login (customerId, password) {
     const uri = `/customers/${customerId}/validate`
-    const valid = await this.apiClientV2.post(uri, { password })
+    const valid = await this.request.post(uri, { password })
 
     return valid && valid.success
   }
@@ -126,7 +131,7 @@ class BigCommerceCustomerRepository {
   async update (customerId, customer) {
     const uri = `/customers/${customerId}`
     try {
-      await this.apiClientV2.put(uri, customer)
+      await this.request.put(uri, customer)
     } catch (e) {
       throw shapeRequestError(e)
     }

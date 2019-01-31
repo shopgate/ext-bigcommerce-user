@@ -3,7 +3,7 @@
   "version": "0.4.3",
   "description": "Shopgate Connect Bigcommerce User",
   "scripts": {
-    "precommit": "npm run test && npm run lint-staged",
+    "precommit": "npm run test && npm run lint",
     "test": "_mocha --use_strict --timeout 15000 --recursive ./test",
     "test:unit": "_mocha --use_strict --recursive ./test/unit",
     "test:integration": "_mocha --use_strict --timeout 15000 --recursive ./test/integration",

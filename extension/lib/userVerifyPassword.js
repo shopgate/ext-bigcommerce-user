@@ -20,7 +20,8 @@ module.exports = async (context, { password }) => {
     customerRepo = BigCommerceCustomerRepository.create(
       context.config.clientId,
       context.config.accessToken,
-      context.config.storeHash
+      context.config.storeHash,
+      context.log
     )
   }
 
