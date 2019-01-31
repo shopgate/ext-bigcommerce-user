@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ### Added
 - basic user data management
+- user data can now be expired, time to live is configurable
 ### Fixed
 - handling user not found case during login process
 

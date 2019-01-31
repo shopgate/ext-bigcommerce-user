@@ -4,7 +4,7 @@ const BigCommerceCustomerTokenUnverifiedError = require('./bigcommerce/customer/
 const BigCommerceCustomerTokenExpiredError = require('./bigcommerce/customer/jwt/TokenExpiredError')
 const ShopgateAutologinInvalidTokenReceivedError = require('./shopgate/customer/errors/InvalidTokenReceivedError')
 const { decorateError } = require('./shopgate/logDecorator')
-const getCustomer = require('./shopgate/customer/get')
+const { getCustomer } = require('./shopgate/customer/get')
 const UserNotFoundError = require('./shopgate/customer/errors/UserNotFoundError')
 
 /**

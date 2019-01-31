@@ -29,7 +29,8 @@
     "lodash.omitby": "^4.6.0",
     "node-bigcommerce": "^3.0.0",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.5",
+    "timestring": "^5.0.1"
   },
   "devDependencies": {
     "@types/bunyan": "^1.8.5",
