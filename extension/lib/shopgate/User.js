@@ -5,16 +5,19 @@ const USER_INFO = 'userInfo'
 
 class ShopgateUser {
   /**
-   * @param {PipelineContext} context
+   * @param {PipelineStorage} userStorage context.storage.user
    * @param {number} ttl time to live in milliseconds
    */
-  constructor (context, ttl) {
-    this.context = context
+  constructor (userStorage, ttl) {
+    this.userStorage = userStorage
     this.ttl = ttl
   }
 
+  /**
+   * @returns {Object}
+   */
   async get () {
-    const userInfo = await this.context.storage.user.get(USER_INFO)
+    const userInfo = await this.userStorage.get(USER_INFO)
     if (!userInfo) {
       return null
     }
@@ -31,14 +34,17 @@ class ShopgateUser {
     return userInfo
   }
 
+  /**
+   * @param {Object} userData
+   */
   async store (userData) {
     const userInfo = userData
     userInfo.touchTime = new Date().toUTCString()
-    await this.context.storage.user.set(USER_INFO, userInfo)
+    await this.userStorage.set(USER_INFO, userInfo)
   }
 
   async remove () {
-    return this.context.storage.user.del(USER_INFO)
+    return this.userStorage.del(USER_INFO)
   }
 
   /**
@@ -46,7 +52,7 @@ class ShopgateUser {
    * @returns {ShopgateUser}
    */
   static create (context) {
-    return new ShopgateUser(context, timestring(context.config.userInfoTTL, 'ms', {}))
+    return new ShopgateUser(context.storage.user, timestring(context.config.userInfoTTL, 'ms', {}))
   }
 }
 
