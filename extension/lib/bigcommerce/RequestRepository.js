@@ -21,21 +21,21 @@ class BigCommerceRequestRepository {
   /**
    * @param {string} path
    * @param {Object} data
-   * @param {boolean} suppressDataLogging
+   * @param {Object} [obfuscatedData]
    * @return {BigCommerceRedirectUrlsResponse}
    */
-  post (path, data, suppressDataLogging = false) {
-    return this.request('post', path, data, suppressDataLogging)
+  post (path, data, obfuscatedData = null) {
+    return this.request('post', path, data, obfuscatedData)
   }
 
   /**
    * @param {string} path
    * @param {Object} data
-   * @param {boolean} suppressDataLogging
+   * @param {Object} [obfuscatedData]
    * @return {BigCommerceRedirectUrlsResponse}
    */
-  put (path, data, suppressDataLogging = false) {
-    return this.request('put', path, data, suppressDataLogging)
+  put (path, data, obfuscatedData = null) {
+    return this.request('put', path, data, obfuscatedData)
   }
 
   /**
@@ -49,31 +49,43 @@ class BigCommerceRequestRepository {
   /**
    * @param {string} type
    * @param {string} path
-   * @param {Object} data
-   * @param {boolean} suppressDataLogging
+   * @param {Object} [data]
+   * @param {Object} [obfuscatedData]
    * @return {BigCommerceRedirectUrlsResponse}
    */
-  async request (type, path, data = null, suppressDataLogging = false) {
-    let request
-    if (data === null || suppressDataLogging) {
-      request = { type, path }
-    } else {
-      request = { type, path, data }
-    }
-
+  async request (type, path, data = null, obfuscatedData = null) {
+    const requestData = this.getRequestData(type, path, data, obfuscatedData)
     const logRequest = new BigCommerceLogger(this.logger)
     const start = new Date()
 
     try {
       const response = await this.client.request(type, path, data)
-      logRequest.log(request, response, new Date() - start, 1)
+      logRequest.log(requestData, response, new Date() - start, 1)
 
       return response
     } catch (e) {
-      logRequest.log(request, e.toString(), new Date() - start, 0)
+      logRequest.log(requestData, e.toString(), new Date() - start, 0)
 
       throw e
     }
+  }
+
+  /**
+   * @param {string} type
+   * @param {string} path
+   * @param {Object} data
+   * @param {Object} obfuscatedData
+   * @return {Object}
+   */
+  getRequestData (type, path, data, obfuscatedData) {
+    if (obfuscatedData !== null) {
+      return { type, path, data: obfuscatedData }
+    }
+    if (data === null) {
+      return { type, path }
+    }
+
+    return { type, path, data }
   }
 }
 
