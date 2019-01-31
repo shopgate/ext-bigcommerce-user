@@ -116,7 +116,7 @@ class BigCommerceCustomerRepository {
    */
   async login (customerId, password) {
     const uri = `/customers/${customerId}/validate`
-    const valid = await this.request.post(uri, { password })
+    const valid = await this.request.post(uri, { password }, true)
 
     return valid && valid.success
   }

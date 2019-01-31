@@ -1,4 +1,4 @@
-const Logger = require('./Logger')
+const BigCommerceLogger = require('./Logger')
 
 class BigCommerceRequestRepository {
   /**
@@ -10,28 +10,58 @@ class BigCommerceRequestRepository {
     this.logger = logger
   }
 
+  /**
+   * @param {string} path
+   * @return {BigCommerceRedirectUrlsResponse}
+   */
   get (path) {
     return this.request('get', path)
   }
 
-  post (path, data) {
-    return this.request('post', path, data)
+  /**
+   * @param {string} path
+   * @param {Object} data
+   * @param {boolean} suppressDataLogging
+   * @return {BigCommerceRedirectUrlsResponse}
+   */
+  post (path, data, suppressDataLogging = false) {
+    return this.request('post', path, data, suppressDataLogging)
   }
 
-  put (path, data) {
-    return this.request('put', path, data)
+  /**
+   * @param {string} path
+   * @param {Object} data
+   * @param {boolean} suppressDataLogging
+   * @return {BigCommerceRedirectUrlsResponse}
+   */
+  put (path, data, suppressDataLogging = false) {
+    return this.request('put', path, data, suppressDataLogging)
   }
 
+  /**
+   * @param {string} path
+   * @return {BigCommerceRedirectUrlsResponse}
+   */
   del (path) {
     return this.request('delete', path)
   }
 
   /**
+   * @param {string} type
+   * @param {string} path
+   * @param {Object} data
+   * @param {boolean} suppressDataLogging
    * @return {BigCommerceRedirectUrlsResponse}
    */
-  async request (type, path, data) {
-    const request = { type, path, data }
-    const logRequest = new Logger(this.logger)
+  async request (type, path, data = null, suppressDataLogging = false) {
+    let request
+    if (data === null || suppressDataLogging) {
+      request = { type, path }
+    } else {
+      request = { type, path, data }
+    }
+
+    const logRequest = new BigCommerceLogger(this.logger)
     const start = new Date()
 
     try {
