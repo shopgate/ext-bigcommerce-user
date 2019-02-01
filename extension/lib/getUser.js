@@ -17,6 +17,9 @@ module.exports = async (context) => {
   let userInfo
   try {
     userInfo = await user.get()
+    if (!userInfo) {
+      userInfo = await tryGettingFreshCustomer(context, parseInt(context.meta.userId), userInfo)
+    }
   } catch (err) {
     userInfo = err instanceof UserDataExpiredError ? err.getUserData() : null
 
