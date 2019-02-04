@@ -68,6 +68,37 @@ describe('getUser', function () {
     sinon.assert.notCalled(getCustomerByIdStub)
   })
 
+  it('should try to fetch & store fresh data when the user is logged in but it doesn\'t exist in the storage', async function () {
+    shopgateUserStub.get.resolves(null)
+
+    getCustomerByIdStub.resolves({
+      userId: '123456',
+      userData: {
+        id: '123456',
+        mail: 'bigc@shopgate.com',
+        firstName: 'Big',
+        lastName: 'Commerce',
+        phone: 'phone number',
+        customerGroups: [],
+        addresses: []
+      }
+    })
+
+    await subjectUnderTest(context).should.eventually.deep.equal({
+      id: '123456',
+      mail: 'bigc@shopgate.com',
+      firstName: 'Big',
+      lastName: 'Commerce',
+      phone: 'phone number',
+      customerGroups: [],
+      addresses: []
+    })
+
+    sinon.assert.called(shopgateUserStub.get)
+    sinon.assert.called(getCustomerByIdStub)
+    sinon.assert.called(shopgateUserStub.store)
+  })
+
   it('should try to fetch & store fresh data when the one we have is expired', async function () {
     const error = new UserDataExpiredError({}, 123456, 120000)
     shopgateUserStub.get.throws(error)
