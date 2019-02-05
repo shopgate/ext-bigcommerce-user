@@ -79,7 +79,7 @@ class BigCommerceRequestRepository {
    */
   getRequestData (type, path, data, obfuscatedData) {
     if (obfuscatedData !== null) {
-      return { type, path, data: obfuscatedData }
+      return { type, path, data: { ...data, ...obfuscatedData } }
     }
     if (data === null) {
       return { type, path }

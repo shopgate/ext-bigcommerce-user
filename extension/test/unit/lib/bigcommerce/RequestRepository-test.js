@@ -89,12 +89,12 @@ describe('BigCommerceRequestRepository', () => {
       chai.assert.deepEqual(await subjectUnderTest.getRequestData(type, path, data, obfuscatedData), expectedParams)
     })
 
-    it('should log obfuscatedData instead of data, if given', async () => {
+    it('should obfuscate data', async () => {
       const type = 'type'
       const path = 'path'
-      const data = { 'some': 'data' }
-      const obfuscatedData = { 'some': 'other data' }
-      const expectedParams = { type, path, data: obfuscatedData }
+      const data = { 'user': 'username', 'password': 'pass' }
+      const obfuscatedData = { 'password': '******' }
+      const expectedParams = { type, path, data: { 'user': 'username', 'password': '******' } }
 
       chai.assert.deepEqual(await subjectUnderTest.getRequestData(type, path, data, obfuscatedData), expectedParams)
     })
