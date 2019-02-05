@@ -54,17 +54,17 @@ class BigCommerceRequestRepository {
    * @return {BigCommerceRedirectUrlsResponse}
    */
   async request (type, path, data = null, obfuscatedData = null) {
-    const requestData = this.getRequestData(type, path, data, obfuscatedData)
+    const logData = this.getRequestData(type, path, data, obfuscatedData)
     const logRequest = new BigCommerceLogger(this.logger)
     const start = new Date()
 
     try {
       const response = await this.client.request(type, path, data)
-      logRequest.log(requestData, response, new Date() - start, 1)
+      logRequest.log(logData, response, new Date() - start, 1)
 
       return response
     } catch (e) {
-      logRequest.log(requestData, e.toString(), new Date() - start, 0)
+      logRequest.log(logData, e.toString(), new Date() - start, 0)
 
       throw e
     }
