@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - basic user data management
 - user data can now be expired, time to live is configurable
+- logging for all API calls
 ### Fixed
 - handling user not found case during login process
 

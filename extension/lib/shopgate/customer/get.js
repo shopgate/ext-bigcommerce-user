@@ -16,7 +16,8 @@ async function getCustomer (context, email) {
     customerRepo = BigCommerceCustomerRepository.create(
       context.config.clientId,
       context.config.accessToken,
-      context.config.storeHash
+      context.config.storeHash,
+      context.log
     )
   }
 
@@ -48,7 +49,8 @@ async function getCustomerById (context, id) {
     customerRepo = BigCommerceCustomerRepository.create(
       context.config.clientId,
       context.config.accessToken,
-      context.config.storeHash
+      context.config.storeHash,
+      context.log
     )
   }
 
