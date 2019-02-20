@@ -34,6 +34,7 @@ const redirectHandler = async ({ dispatch, getState }) => {
   if (!url) {
     // Fetch a fresh url if none was found within the store.
     url = await dispatch(fetchRegisterUrl());
+    console.warn('FETCHED URL', url);
   }
   url = buildRegisterUrl(url, location);
 
