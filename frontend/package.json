@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/bigcommerce-user",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-beta.1",
   "description": "Shopgate Connect Bigcommerce User",
   "scripts": {
     "lint": "eslint --ignore-path ../.gitignore --ext .js --ext .jsx .",
