@@ -4,19 +4,62 @@
     "id": "bigcommerce.user.autologin.v1",
     "public": true,
     "input": [
-      {"key": "sgxsMeta", "id": "1000", "optional": true},
-      {"key": "token", "id": "1001"}
+      {
+        "key": "sgxsMeta",
+        "id": "100",
+        "optional": true
+      },
+      {
+        "key": "token",
+        "id": "200"
+      },
+      {
+        "key": "algorithm",
+        "id": "300",
+        "optional": true
+      }
     ],
     "output": [
       {"key": "userId", "id": "2001"}
     ],
     "steps": [
       {
+        "type": "pipeline",
+        "id": "bigcommerce.user.customerJwtDecrypt.v1.json",
+        "input": [
+          {
+            "key": "payload",
+            "id": "200"
+          },
+          {
+            "key": "algorithm",
+            "id": "300",
+            "optional": true
+          }
+        ],
+        "output": [
+          {
+            "key": "customer",
+            "id": "1000"
+          }
+        ]
+      },
+      {
+        "type": "errorCatchExtension",
+        "id": "@shopgate/bigcommerce-user",
+        "path": "@shopgate/bigcommerce-user/lib/errors/catchJwtError.js",
+        "input": [],
+        "output": []
+      },
+      {
         "type": "extension",
         "id": "@shopgate/bigcommerce-user",
         "path": "@shopgate/bigcommerce-user/lib/autologin.js",
         "input": [
-          {"key": "token", "id": "1001"}
+          {
+            "key": "customer",
+            "id": "1000"
+          }
         ],
         "output": [
           {"key": "userId", "id": "2001"},
@@ -65,7 +108,11 @@
         "type": "pipeline",
         "id": "bigcommerce.cart.mergeOnLogin.v1",
         "input": [
-          {"key": "sgxsMeta", "id": "1000", "optional": true}
+          {
+            "key": "sgxsMeta",
+            "id": "100",
+            "optional": true
+          }
         ],
         "output": []
       }

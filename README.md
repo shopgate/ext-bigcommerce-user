@@ -27,6 +27,49 @@ This extension can be configured using following parameters:
     * 1d - one day 
     * 2d 5h 30m - two days, five hours and thirty minutes 
 
+## JWT Payload translation
+The bigcommerce.user.autologin.v1 pipeline was created to log the customer in our App from a BigCommerce in-app browser. 
+It is called by a theme script which is injected into the BigCommerce store via Web Analytics Google script.
+The theme generator code can be found [here](https://github.com/shopgate/bigcommerce-js) as well as the instructions.
+
+One can also notice that the customer is requested from the theme 
+[code](https://github.com/shopgate/bigcommerce-js/blob/ff923770a1842184547413425b909b27a103c071/src/modules/app_event_subscribers/autologin.js#L20) 
+and passed into our autologin pipeline.
+
+To increase security we outsourced the translation of this JWT payload token to a different plugin, 
+see the mentioned pipeline file to see how it is used:
+```$xslt
+{
+    "type": "pipeline",
+    "id": "bigcommerce.user.customerJwtDecrypt.v1.json",
+    "input": [
+      {"key": "payload", "id": "200"},
+      {"key": "algorithm", "id": "300", "optional": true}
+    ],
+    "output": [
+      {"key": "customer", "id": "1000"}
+    ]
+},
+{
+    "type": "errorCatchExtension",
+    "id": "@shopgate/bigcommerce-user",
+    "path": "@shopgate/bigcommerce-user/lib/errors/catchJwtError.js",
+    "input": [],
+    "output": []
+},
+```
+Note that all customerJwtDecrypt does is decrypting the payload via an 
+npm module [jwt-simple](https://www.npmjs.com/package/jwt-simple):
+```$xslt
+const { customer } = jwtDecoder.decode(payload, appClientSecret, false, algorithm)
+```
+The `response.customer` returned in the 
+[object](https://developer.bigcommerce.com/api-docs/customers/current-customer-api) of the BigCommerce' 
+`Current Customer API` call.
+
+Just like in the above pipeline json, do not forget to handle the errors that come from the `jwt-simple` module 
+in your custom pipelines.
+
 ## About Shopgate
 
 Shopgate is the leading mobile commerce platform.
