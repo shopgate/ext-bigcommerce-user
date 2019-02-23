@@ -1,14 +1,15 @@
+const ShopgateUser = require('./shopgate/User')
 const { decorateError } = require('./shopgate/logDecorator')
 /**
- * @param {Object} context
- * @param {Object} input
+ * @param {PipelineContext} context
+ * @param {Object} userData
  */
-module.exports = async (context, input) => {
+module.exports = async (context, { userData }) => {
+  const user = ShopgateUser.create(context)
   try {
-    await context.storage.user.set('userInfo', input.userData)
+    await user.store(userData)
   } catch (err) {
     context.log.error(decorateError(err), 'failed to store user data')
-    throw new Error(`User storage error ${err}`)
+    throw new Error()
   }
-  return {}
 }

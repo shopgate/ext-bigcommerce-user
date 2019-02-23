@@ -9,7 +9,8 @@ const BigCommerceCustomerRequestClientError = require('../../../../../lib/bigcom
 const UnknownError = require('../../../../../lib/shopgate/customer/errors/UnknownError')
 const ClientRequestError = require('../../../../../lib/shopgate/customer/errors/ClientRequestError')
 
-let subjectUnderTest = require('../../../../../lib/shopgate/customer/get')
+let getCustomer = require('../../../../../lib/shopgate/customer/get').getCustomer
+let getCustomerById = require('../../../../../lib/shopgate/customer/get').getCustomerById
 
 describe('getCustomer', function () {
   let sandbox
@@ -50,19 +51,41 @@ describe('getCustomer', function () {
     repoStub = sandbox.createStubInstance(BigCommerceCustomerRepository)
     const repoCreate = sandbox.stub(BigCommerceCustomerRepository, 'create')
     repoCreate.returns(repoStub)
-    subjectUnderTest = proxyquire('../../../../../lib/shopgate/customer/get', {
+    const customer = proxyquire('../../../../../lib/shopgate/customer/get', {
       '../../bigcommerce/CustomerRepository': repoStub
     })
+    getCustomer = customer.getCustomer
+    getCustomerById = customer.getCustomerById
   })
 
   afterEach(() => {
     sandbox.restore()
   })
 
-  it('should return customer data', async () => {
+  it('should return customer data when asked by email', async () => {
     repoStub.getCustomerByEmail.resolves(customerData)
 
-    return subjectUnderTest(context, 'bigc@shopgate.com').should.eventually.deep.equal({
+    return getCustomer(context, 'bigc@shopgate.com').should.eventually.deep.equal({
+      userId: '21',
+      userData: {
+        addresses: [],
+        userGroups: [10],
+        firstName: 'John',
+        id: '21',
+        lastName: 'Doe',
+        mail: 'john.doe@test.com',
+        customAttributes: {
+          phone: '123456789',
+          company: 'Fake Inc.'
+        }
+      }
+    })
+  })
+
+  it('should return customer data when asked by id', async () => {
+    repoStub.getCustomerById.resolves(customerData)
+
+    return getCustomerById(context, 21).should.eventually.deep.equal({
       userId: '21',
       userData: {
         addresses: [],
@@ -83,7 +106,7 @@ describe('getCustomer', function () {
     const error = new Error('Some unknown error')
     repoStub.getCustomerByEmail.rejects(error)
 
-    await subjectUnderTest(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(UnknownError)
+    await getCustomer(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(UnknownError)
       .and.have.property('code', 'EUNKNOWN')
 
     sinon.assert.calledOnce(context.log.error)
@@ -93,7 +116,7 @@ describe('getCustomer', function () {
     const error = new BigCommerceCustomerRequestClientError(400, 'The field \'email\' is invalid.')
     repoStub.getCustomerByEmail.rejects(error)
 
-    await subjectUnderTest(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(ClientRequestError)
+    await getCustomer(context, 'bigc@shopgate.com').should.eventually.be.rejectedWith(ClientRequestError)
       .and.have.property('message', `The field 'email' is invalid.`)
 
     sinon.assert.notCalled(context.log.error)

@@ -38,8 +38,6 @@ describe('login()', async () => {
       mail: 'john.doe@test.com',
       firstName: 'John',
       lastName: 'Doe',
-      gender: null,
-      birthday: null,
       phone: '123456789',
       customerGroups: [10],
       addresses: []
@@ -53,7 +51,7 @@ describe('login()', async () => {
 
     getCustomerStub = sandbox.stub()
     login = proxyquire('../../../lib/login', {
-      './shopgate/customer/get': getCustomerStub
+      './shopgate/customer/get': { getCustomer: getCustomerStub }
     })
 
     repoStub = sandbox.createStubInstance(BigCommerceCustomerRepository)
@@ -83,8 +81,6 @@ describe('login()', async () => {
         mail: 'john.doe@test.com',
         firstName: 'John',
         lastName: 'Doe',
-        gender: null,
-        birthday: null,
         phone: '123456789',
         customerGroups: [10],
         addresses: []

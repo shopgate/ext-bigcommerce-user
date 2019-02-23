@@ -8,4 +8,3 @@ npm-debug.log
 .integration-credentials.js
 config.json
 .nyc_output
-package-lock.json

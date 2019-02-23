@@ -1,9 +1,9 @@
 {
   "name": "@shopgate/bigcommerce-user",
-  "version": "0.4.3",
+  "version": "2.0.0",
   "description": "Shopgate Connect Bigcommerce User",
   "scripts": {
-    "precommit": "npm run test && npm run lint-staged",
+    "precommit": "npm run test && npm run lint",
     "test": "_mocha --use_strict --timeout 15000 --recursive ./test",
     "test:unit": "_mocha --use_strict --recursive ./test/unit",
     "test:integration": "_mocha --use_strict --timeout 15000 --recursive ./test/integration",
@@ -29,7 +29,8 @@
     "lodash.omitby": "^4.6.0",
     "node-bigcommerce": "^3.0.0",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
+    "request-promise-native": "^1.0.5",
+    "timestring": "^5.0.1"
   },
   "devDependencies": {
     "@types/bunyan": "^1.8.5",

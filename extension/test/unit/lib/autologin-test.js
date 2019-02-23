@@ -30,7 +30,7 @@ describe('autologin', function () {
     currentCustomerStub = sandbox.stub(currentCustomer, 'getCurrentCustomerFromJWTToken')
     getCustomerStub = sandbox.stub()
     subjectUnderTest = proxyquire('../../../lib/autologin', {
-      './shopgate/customer/get': getCustomerStub
+      './shopgate/customer/get': { getCustomer: getCustomerStub }
     })
   })
 
@@ -47,8 +47,6 @@ describe('autologin', function () {
         mail: 'bigc@shopgate.com',
         firstName: 'Big',
         lastName: 'Commerce',
-        gender: null,
-        birthday: null,
         phone: 'phone number',
         customerGroups: [],
         addresses: []
@@ -64,8 +62,6 @@ describe('autologin', function () {
         mail: 'bigc@shopgate.com',
         firstName: 'Big',
         lastName: 'Commerce',
-        gender: null,
-        birthday: null,
         phone: 'phone number',
         customerGroups: [],
         addresses: []

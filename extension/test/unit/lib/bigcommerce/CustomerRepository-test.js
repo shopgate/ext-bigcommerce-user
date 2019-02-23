@@ -2,9 +2,8 @@ const sinon = require('sinon')
 const chai = require('chai')
 chai.use(require('chai-as-promised')).should()
 
-const Logger = require('bunyan')
-const BigCommerce = require('node-bigcommerce')
 const BigCommerceCustomerRepository = require('../../../../lib/bigcommerce/CustomerRepository')
+const BigCommerceRequestRepository = require('../../../../lib/bigcommerce/RequestRepository')
 
 describe('BigCommerceCustomerRepository', () => {
   const sandbox = sinon.createSandbox()
@@ -12,8 +11,7 @@ describe('BigCommerceCustomerRepository', () => {
   let repo
 
   beforeEach(() => {
-    context.log = sandbox.createStubInstance(Logger)
-    apiClientStub = sandbox.createStubInstance(BigCommerce)
+    apiClientStub = sandbox.createStubInstance(BigCommerceRequestRepository)
     repo = new BigCommerceCustomerRepository(apiClientStub)
   })
 

@@ -1,5 +1,5 @@
 {
-  "version": "0.4.3",
+  "version": "2.0.0",
   "id": "@shopgate/bigcommerce-user",
   "trusted": true,
   "configuration": {
@@ -78,6 +78,19 @@
         "service": "config",
         "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
         "key": "value.appClientSecret"
+      }
+    },
+    "userInfoTTL": {
+      "type" : "admin",
+      "destination" : "backend",
+      "default": "5m",
+      "params": {
+        "type":  "text",
+        "label": "User cache TTL",
+        "required": false,
+        "options": {
+          "placeholder": "Example: 5d 3h 5m"
+        }
       }
     },
     "requestTimeout": {
