@@ -8,8 +8,13 @@ const { decorateError } = require('../../shopgate/logDecorator')
  * @param {PipelineContext} context
  *
  * @throws InvalidPayloadError
+ * @throws Error
  */
 module.exports = async (error, context) => {
+  if (!error) {
+    return
+  }
+
   if (error.message === 'Signature verification failed') {
     context.log.error(decorateError(error, 'low'), error.message)
 

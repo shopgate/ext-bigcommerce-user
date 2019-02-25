@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 ### Removed
-- removed JWT token translation from plugin. See [README](./README.md) for more details.
+- JWT token translation from plugin. See [README](./README.md) for more details.
 - appClientSecret and appClientId configuration fields
 
 ## [2.0.0] - 2019-02-20
