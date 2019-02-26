@@ -58,28 +58,6 @@
         "key": "value.storeDomain"
       }
     },
-    "bigCommerceAppClientId": {
-      "type" : "bigApi",
-      "destination" : "backend",
-      "default": null,
-      "params": {
-        "method":  "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
-        "key": "value.appClientId"
-      }
-    },
-    "bigCommerceAppClientSecret": {
-      "type" : "bigApi",
-      "destination" : "backend",
-      "default": null,
-      "params": {
-        "method":  "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
-        "key": "value.appClientSecret"
-      }
-    },
     "userInfoTTL": {
       "type" : "admin",
       "destination" : "backend",
