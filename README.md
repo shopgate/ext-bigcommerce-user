@@ -58,7 +58,7 @@ see the mentioned pipeline file to see how it is used:
     "output": []
 },
 ```
-Note that all customerJwtDecrypt does is decrypting the payload via a 
+Note that all customerJwtDecrypt does is decrypting the payload via an 
 npm module [jwt-simple](https://www.npmjs.com/package/jwt-simple):
 ```$xslt
 const { customer } = jwtDecoder.decode(payload, appClientSecret, false, algorithm)
