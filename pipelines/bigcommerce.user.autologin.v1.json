@@ -4,20 +4,9 @@
     "id": "bigcommerce.user.autologin.v1",
     "public": true,
     "input": [
-      {
-        "key": "sgxsMeta",
-        "id": "100",
-        "optional": true
-      },
-      {
-        "key": "token",
-        "id": "200"
-      },
-      {
-        "key": "algorithm",
-        "id": "300",
-        "optional": true
-      }
+      {"key": "sgxsMeta", "id": "100", "optional": true},
+      {"key": "token", "id": "200"},
+      {"key": "algorithm", "id": "300", "optional": true}
     ],
     "output": [
       {"key": "userId", "id": "2001"}
@@ -28,15 +17,8 @@
         "id": "bigcommerce.user.customerJwtDecrypt.v1",
         "trusted": true,
         "input": [
-          {
-            "key": "payload",
-            "id": "200"
-          },
-          {
-            "key": "algorithm",
-            "id": "300",
-            "optional": true
-          }
+          {"key": "payload", "id": "200"},
+          {"key": "algorithm", "id": "300", "optional": true}
         ],
         "output": [
           {
