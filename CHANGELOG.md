@@ -6,13 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
-[2.0.0] - 2019-02-20
+## [3.0.0] - 2019-02-28
+### Removed
+- JWT token translation from plugin. See [README](./README.md) for more details.
+- appClientSecret and appClientId configuration fields
+
+## [2.0.0] - 2019-02-20
 ### Added
 - basic user data management
 - user data can now be expired, time to live is configurable
 - logging for all API calls
 ## Changed
-- Frontend migration to PWA6.
+- frontend migration to PWA6.
 ### Fixed
 - handling user not found case during login process
 
@@ -46,8 +51,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - login pipeline now calls an additional step at the end (from the bigcommerce cart extension) that merges the anonymous cart into the logged in cart
 
-[Unreleased]: https://github.com/shopgate/ext-bigcommerce-user/compare/v2.0.0...HEAD
-[2.0.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.0...v2.0.0
+[Unreleased]: https://github.com/shopgate/ext-bigcommerce-user/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v2.0.0...v3.0.0
+[2.0.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.3...v2.0.0
+[0.4.3]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.2...v0.4.3
+[0.4.2]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.2.0...v0.3.0

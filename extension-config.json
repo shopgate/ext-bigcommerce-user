@@ -1,5 +1,5 @@
 {
-  "version": "2.0.0",
+  "version": "3.0.0",
   "id": "@shopgate/bigcommerce-user",
   "trusted": true,
   "configuration": {
@@ -56,28 +56,6 @@
         "service": "config",
         "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
         "key": "value.storeDomain"
-      }
-    },
-    "bigCommerceAppClientId": {
-      "type" : "bigApi",
-      "destination" : "backend",
-      "default": null,
-      "params": {
-        "method":  "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
-        "key": "value.appClientId"
-      }
-    },
-    "bigCommerceAppClientSecret": {
-      "type" : "bigApi",
-      "destination" : "backend",
-      "default": null,
-      "params": {
-        "method":  "GET",
-        "service": "config",
-        "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
-        "key": "value.appClientSecret"
       }
     },
     "userInfoTTL": {

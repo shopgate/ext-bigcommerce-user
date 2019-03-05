@@ -44,8 +44,6 @@ interface PipelineConfiguration {
   accessToken: string
   requestTimeout: string
   storeDomain?: string
-  bigCommerceAppClientId: string
-  bigCommerceAppClientSecret: string
 }
 
 interface PipelineContextMeta {
