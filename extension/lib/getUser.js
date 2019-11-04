@@ -60,6 +60,6 @@ async function tryGettingFreshCustomer (context, id, expiredData) {
   } catch (err) {
     context.log.error(decorateError(err), `Unable to get the customer for id ${id}`)
     context.log.warn(decorateError(err), `delivering stale data ${id}`)
-    return expiredData
+    return expiredData.userData
   }
 }
