@@ -179,7 +179,7 @@ describe('getUser', function () {
     }, 123456, 120000)
     shopgateUserStub.get.throws(error)
 
-    getCustomerByIdStub.withArgs(123456).rejects(Error)
+    getCustomerByIdStub.rejects(Error)
 
     await subjectUnderTest(context).should.eventually.deep.equal({
       id: '123456',

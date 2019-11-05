@@ -21,7 +21,7 @@ module.exports = async (context) => {
       userInfo = await tryGettingFreshCustomer(context, parseInt(context.meta.userId), userInfo)
     }
   } catch (err) {
-    userInfo = err instanceof UserDataExpiredError ? err.getUserData() : null
+    userInfo = err instanceof UserDataExpiredError ? {userData : err.getUserData()} : null
 
     if (!(err instanceof UserDataExpiredError)) {
       context.log.error(decorateError(err), 'Failed getting shopgate user')
