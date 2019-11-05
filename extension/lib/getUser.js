@@ -37,7 +37,7 @@ module.exports = async (context) => {
     throw new Error()
   }
 
-  return userInfo
+  return userInfo.userData
 }
 
 /**
@@ -56,10 +56,10 @@ async function tryGettingFreshCustomer (context, id, expiredData) {
       context.log.error(decorateError(err), `Failed saving fresh data for ${id}`)
     }
     context.log.warn(`delivering fresh data ${id}`)
-    return fresh.userData
+    return fresh
   } catch (err) {
     context.log.error(decorateError(err), `Unable to get the customer for id ${id}`)
     context.log.warn(decorateError(err), `delivering stale data ${id}`)
-    return expiredData.userData
+    return expiredData
   }
 }

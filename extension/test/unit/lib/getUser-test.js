@@ -39,13 +39,17 @@ describe('getUser', function () {
 
   it('should return user data from the storage', async function () {
     shopgateUserStub.get.resolves({
-      id: '123456',
-      mail: 'bigc@shopgate.com',
-      firstName: 'Big',
-      lastName: 'Commerce',
-      phone: 'phone number',
-      customerGroups: [],
-      addresses: []
+      userId: '123456',
+      userData: {
+        id: '123456',
+        mail: 'bigc@shopgate.com',
+        firstName: 'Big',
+        lastName: 'Commerce',
+        phone: 'phone number',
+        customerGroups: [],
+        addresses: []
+      },
+      ttl: 120000
     })
 
     await subjectUnderTest(context).should.eventually.deep.equal({

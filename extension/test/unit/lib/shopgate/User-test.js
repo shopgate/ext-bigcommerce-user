@@ -43,24 +43,28 @@ describe('ShopgateUser', function () {
     const touchTimeNow = new Date().toUTCString()
     const subjectUnderTest = ShopgateUser.create(context)
     context.storage.user.get.resolves({
-      id: '123456',
-      mail: 'bigc@shopgate.com',
-      firstName: 'Big',
-      lastName: 'Commerce',
-      phone: 'phone number',
-      customerGroups: [],
-      addresses: [],
+      userData: {
+        id: '123456',
+        mail: 'bigc@shopgate.com',
+        firstName: 'Big',
+        lastName: 'Commerce',
+        phone: 'phone number',
+        customerGroups: [],
+        addresses: []
+      },
       touchTime: touchTimeNow
     })
 
     await subjectUnderTest.get().should.eventually.deep.equal({
-      id: '123456',
-      mail: 'bigc@shopgate.com',
-      firstName: 'Big',
-      lastName: 'Commerce',
-      phone: 'phone number',
-      customerGroups: [],
-      addresses: [],
+      userData: {
+        id: '123456',
+        mail: 'bigc@shopgate.com',
+        firstName: 'Big',
+        lastName: 'Commerce',
+        phone: 'phone number',
+        customerGroups: [],
+        addresses: []
+      },
       touchTime: touchTimeNow
     })
 
