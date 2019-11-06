@@ -43,24 +43,28 @@ describe('ShopgateUser', function () {
     const touchTimeNow = new Date().toUTCString()
     const subjectUnderTest = ShopgateUser.create(context)
     context.storage.user.get.resolves({
-      id: '123456',
-      mail: 'bigc@shopgate.com',
-      firstName: 'Big',
-      lastName: 'Commerce',
-      phone: 'phone number',
-      customerGroups: [],
-      addresses: [],
+      userData: {
+        id: '123456',
+        mail: 'bigc@shopgate.com',
+        firstName: 'Big',
+        lastName: 'Commerce',
+        phone: 'phone number',
+        customerGroups: [],
+        addresses: []
+      },
       touchTime: touchTimeNow
     })
 
     await subjectUnderTest.get().should.eventually.deep.equal({
-      id: '123456',
-      mail: 'bigc@shopgate.com',
-      firstName: 'Big',
-      lastName: 'Commerce',
-      phone: 'phone number',
-      customerGroups: [],
-      addresses: [],
+      userData: {
+        id: '123456',
+        mail: 'bigc@shopgate.com',
+        firstName: 'Big',
+        lastName: 'Commerce',
+        phone: 'phone number',
+        customerGroups: [],
+        addresses: []
+      },
       touchTime: touchTimeNow
     })
 
@@ -77,13 +81,15 @@ describe('ShopgateUser', function () {
   it('should throw expired error when there is no time to live information in user data', function () {
     const subjectUnderTest = ShopgateUser.create(context)
     context.storage.user.get.resolves({
-      id: '123456',
-      mail: 'bigc@shopgate.com',
-      firstName: 'Big',
-      lastName: 'Commerce',
-      phone: 'phone number',
-      customerGroups: [],
-      addresses: []
+      userData: {
+        id: '123456',
+        mail: 'bigc@shopgate.com',
+        firstName: 'Big',
+        lastName: 'Commerce',
+        phone: 'phone number',
+        customerGroups: [],
+        addresses: []
+      }
     })
 
     return subjectUnderTest.get().should.eventually.be.rejectedWith(UserDataExpiredError)
@@ -92,13 +98,15 @@ describe('ShopgateUser', function () {
   it('should throw expired error when user data is expired', function () {
     const subjectUnderTest = ShopgateUser.create(context)
     context.storage.user.get.resolves({
-      id: '123456',
-      mail: 'bigc@shopgate.com',
-      firstName: 'Big',
-      lastName: 'Commerce',
-      phone: 'phone number',
-      customerGroups: [],
-      addresses: [],
+      userData: {
+        id: '123456',
+        mail: 'bigc@shopgate.com',
+        firstName: 'Big',
+        lastName: 'Commerce',
+        phone: 'phone number',
+        customerGroups: [],
+        addresses: []
+      },
       touchTime: 'Mon, 28 Jan 2019 10:36:03 GMT'
     })
 
@@ -110,8 +118,7 @@ describe('ShopgateUser', function () {
         lastName: 'Commerce',
         phone: 'phone number',
         customerGroups: [],
-        addresses: [],
-        touchTime: 'Mon, 28 Jan 2019 10:36:03 GMT'
+        addresses: []
       })
   })
 

@@ -23,12 +23,12 @@ class ShopgateUser {
     }
 
     if (!userInfo.touchTime) {
-      throw new UserDataExpiredError(userInfo, 0, this.ttl)
+      throw new UserDataExpiredError(userInfo.userData, 0, this.ttl)
     }
 
     const lastTouchTime = new Date(userInfo.touchTime).getTime()
     if (lastTouchTime + this.ttl < new Date().getTime()) {
-      throw new UserDataExpiredError(userInfo, userInfo.touchTime, this.ttl)
+      throw new UserDataExpiredError(userInfo.userData, userInfo.touchTime, this.ttl)
     }
 
     return userInfo
