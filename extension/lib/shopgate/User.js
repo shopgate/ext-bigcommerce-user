@@ -35,10 +35,9 @@ class ShopgateUser {
   }
 
   /**
-   * @param {Object} userData
+   * @param {Object} userInfo
    */
-  async store (userData) {
-    const userInfo = userData
+  async store (userInfo) {
     userInfo.touchTime = new Date().toUTCString()
     await this.userStorage.set(USER_INFO, userInfo)
   }
