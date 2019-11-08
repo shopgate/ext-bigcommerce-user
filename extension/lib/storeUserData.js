@@ -7,7 +7,7 @@ const { decorateError } = require('./shopgate/logDecorator')
 module.exports = async (context, { userData }) => {
   const user = ShopgateUser.create(context)
   try {
-    await user.store({ userId: userData.id, userData: userData })
+    await user.store({ userId: userData.id, userData })
   } catch (err) {
     context.log.error(decorateError(err), 'failed to store user data')
     throw new Error()
