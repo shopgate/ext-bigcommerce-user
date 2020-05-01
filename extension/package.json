@@ -12,7 +12,9 @@
     "check": "npm audit",
     "cover:unit": "nyc _mocha --recursive ../test/unit",
     "cover:integration": "nyc _mocha --use_strict --timeout 15000 --recursive ./test/integration",
-    "cover": "nyc _mocha --use_strict --timeout 15000 --recursive ./test"
+    "cover": "nyc _mocha --use_strict --timeout 15000 --recursive ./test",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "lint-staged": {
     "*.js": "npm run lint"
@@ -30,7 +32,8 @@
     "node-bigcommerce": "^3.0.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
-    "timestring": "^5.0.1"
+    "timestring": "^5.0.1",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "@types/bunyan": "^1.8.5",
@@ -60,5 +63,6 @@
     "env": [
       "mocha"
     ]
-  }
+  },
+  "snyk": true
 }
