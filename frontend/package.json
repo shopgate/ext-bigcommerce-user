@@ -1,6 +1,6 @@
 {
   "name": "@shopgate/bigcommerce-user",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "description": "Shopgate Connect Bigcommerce User",
   "scripts": {
     "lint": "eslint --ignore-path ../.gitignore --ext .js --ext .jsx .",
@@ -49,12 +49,5 @@
     "react-redux": "^5.0.5",
     "redux-mock-store": "^1.5.3",
     "reselect": "^3.0.1"
-  },
-  "peerDependencies": {
-    "@shopgate/pwa-common": "^6.1.0",
-    "@shopgate/pwa-common-commerce": "^6.1.0",
-    "@shopgate/pwa-core": "^6.1.0",
-    "@shopgate/pwa-ui-shared": "^6.1.0",
-    "@shopgate/pwa-webcheckout-shopify": "^6.1.0"
   }
 }
