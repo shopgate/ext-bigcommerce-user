@@ -3,6 +3,7 @@ const _ = {
   omitBy: require('lodash.omitby')
 }
 
+const ShopgateUser = require('./shopgate/User')
 const { decorateError } = require('./shopgate/logDecorator')
 /**
  * @param {Object} context
@@ -10,8 +11,10 @@ const { decorateError } = require('./shopgate/logDecorator')
  */
 module.exports = async (context, { firstName, lastName, mail }) => {
   let userData
+  const user = ShopgateUser.create(context)
   try {
-    userData = await context.storage.user.get('userInfo')
+    const userInfo = await user.get()
+    userData = userInfo.userData
   } catch (err) {
     context.log.error(decorateError(err), 'failed to get user data from the storage')
     throw new Error(`User storage error ${err}`)

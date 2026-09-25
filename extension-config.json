@@ -1,69 +1,69 @@
 {
-  "version": "3.0.2",
+  "version": "3.0.3",
   "id": "@shopgate/bigcommerce-user",
   "trusted": true,
   "configuration": {
-    "storeHash" : {
-      "type" : "bigApi",
-      "destination" : "backend",
+    "storeHash": {
+      "type": "bigApi",
+      "destination": "backend",
       "default": null,
       "params": {
-        "method":  "GET",
+        "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
         "key": "value.storeHash"
       }
     },
-    "accessToken" : {
-      "type" : "bigApi",
-      "destination" : "backend",
+    "accessToken": {
+      "type": "bigApi",
+      "destination": "backend",
       "default": null,
       "params": {
-        "method":  "GET",
+        "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
         "key": "value.accessToken"
       }
     },
     "clientId": {
-      "type" : "bigApi",
-      "destination" : "backend",
+      "type": "bigApi",
+      "destination": "backend",
       "default": null,
       "params": {
-        "method":  "GET",
+        "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
         "key": "value.clientId"
       }
     },
     "clientSecret": {
-      "type" : "bigApi",
-      "destination" : "backend",
+      "type": "bigApi",
+      "destination": "backend",
       "default": null,
       "params": {
-        "method":  "GET",
+        "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
         "key": "value.clientSecret"
       }
     },
     "storeDomain": {
-      "type" : "bigApi",
-      "destination" : "backend",
+      "type": "bigApi",
+      "destination": "backend",
       "default": null,
       "params": {
-        "method":  "GET",
+        "method": "GET",
         "service": "config",
         "path": "/v1/shop/%(shopId)s/bigcommerce_api_credentials?parsed=true",
         "key": "value.storeDomain"
       }
     },
     "userInfoTTL": {
-      "type" : "admin",
-      "destination" : "backend",
+      "type": "admin",
+      "destination": "backend",
       "default": "5m",
       "params": {
-        "type":  "text",
+        "type": "text",
         "label": "User cache TTL",
         "required": false,
         "options": {

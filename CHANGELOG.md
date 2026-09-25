@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ## [Unreleased]
 
+## [3.0.1] - 2019-11-11
+### Fixed
+- usage of cached user information
+
 ## [3.0.0] - 2019-02-28
 ### Removed
 - JWT token translation from plugin. See [README](./README.md) for more details.
@@ -51,7 +55,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ### Added
 - login pipeline now calls an additional step at the end (from the bigcommerce cart extension) that merges the anonymous cart into the logged in cart
 
-[Unreleased]: https://github.com/shopgate/ext-bigcommerce-user/compare/v3.0.0...HEAD
+[Unreleased]: https://github.com/shopgate/ext-bigcommerce-user/compare/v3.0.1...HEAD
+[3.0.1]: https://github.com/shopgate/ext-bigcommerce-user/compare/v3.0.0...v3.0.1
 [3.0.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v2.0.0...v3.0.0
 [2.0.0]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.3...v2.0.0
 [0.4.3]: https://github.com/shopgate/ext-bigcommerce-user/compare/v0.4.2...v0.4.3
